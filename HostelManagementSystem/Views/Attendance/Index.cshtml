@@ -1,0 +1,47 @@
+﻿
+@model List<HostelManagementSystem.Models.AttendanceRecord>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+
+<div class="container mt-5">
+
+    <h2 class="text-center mb-4">📅 Attendance Tracker</h2>
+
+    <form method="post" action="/Attendance/Mark" class="d-flex gap-2 mb-4">
+        <input type="text" name="studentName" placeholder="Enter Student Name" class="form-control" required />
+        <button class="btn btn-success">Mark Present ✅</button>
+    </form>
+
+    <form action="/Attendance/Undo" method="get">
+        <button class="btn btn-warning mb-3">Undo Last Entry 🔄</button>
+    </form>
+
+    @if (ViewBag.LastMarked != null)
+    {
+        <div class="alert alert-info">
+            Last Marked: <strong>@ViewBag.LastMarked.StudentName</strong> at <strong>@ViewBag.LastMarked.TimeStamp</strong>
+        </div>
+    }
+
+    <p><strong>Total Present Today:</strong> @ViewBag.TotalCount</p>
+
+    <table class="table table-bordered text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>Student</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in Model)
+            {
+                <tr>
+                    <td>@r.StudentName</td>
+                    <td>@r.Time</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
