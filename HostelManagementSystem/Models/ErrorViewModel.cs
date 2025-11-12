@@ -1,9 +1,0 @@
-namespace HostelManagementSystem.Models
-{
-    public class ErrorViewModel
-    {
-        public string? RequestId { get; set; }
-        public int ID { get; set; }
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
-    }
-}
