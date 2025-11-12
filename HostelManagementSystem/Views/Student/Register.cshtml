@@ -1,0 +1,21 @@
+﻿@model HostelManagementSystem.Models.Student
+
+<h2>Register Student</h2>
+
+<form method="post">
+
+    <label>ID:</label>
+    <input asp-for="StudentID" /><br />
+
+    <label>Name:</label>
+    <input asp-for="StudentName" /><br />
+
+    <label>Room No:</label>
+    <input asp-for="RoomNo" /><br />
+
+    <label>Fee Paid:</label>
+    <input asp-for="FeeStatus" type="checkbox" /><br />
+
+    <button type="submit">Save</button>
+</form>
+

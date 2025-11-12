@@ -1,0 +1,23 @@
+﻿@model List<HostelManagementSystem.Models.Student>
+
+<h2>Students</h2>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Room</th>
+        <th>Fee Paid</th>
+    </tr>
+
+    @foreach (var s in Model)
+    {
+        <tr>
+            <td>@s.StudentID</td>
+            <td>@s.StudentName</td>
+            <td>@s.RoomNo</td>
+            <td>@(s.FeeStatus ? "Yes" : "No")</td>
+        </tr>
+    }
+</table>
+✅
