@@ -1,4 +1,4 @@
-﻿@model List<HostelManagementSystem.Models.Student>
+﻿@* @model List<HostelManagementSystem.Models.Student>
 
 <h2>Students</h2>
 
@@ -20,4 +20,82 @@
         </tr>
     }
 </table>
-✅
+✅ *@
+
+@model List<HostelManagementSystem.Models.Student>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+
+<div class="container mt-5">
+
+    <!-- HEADER CARD -->
+    <div class="card shadow-sm border-0 mb-4" style="border-radius: 18px;">
+        <div class="card-body p-4">
+            <h2 class="fw-bold mb-2"><i class="bi bi-people-fill text-primary"></i> Student Management</h2>
+            <p class="text-muted">View, Register, and Sort Students easily.</p>
+
+            <div class="d-flex gap-2 mt-3">
+
+                <!-- Add Student -->
+                <a href="/Student/Register" class="btn btn-success px-4 shadow-sm">
+                    <i class="bi bi-person-plus"></i> Add Student
+                </a>
+
+                <!-- Sort by ID -->
+                <a href="/Student/SortByID" class="btn btn-primary px-4 shadow-sm">
+                    <i class="bi bi-sort-numeric-down"></i> Sort by ID
+                </a>
+
+                <!-- Sort by Name (Optional) -->
+                <a href="/Student/SortByName" class="btn btn-info px-4 text-white shadow-sm">
+                    <i class="bi bi-sort-alpha-down"></i> Sort by Name
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- STUDENT TABLE -->
+    <div class="card shadow-sm border-0" style="border-radius: 18px;">
+        <div class="card-body">
+
+            <table class="table table-hover align-middle text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th><i class="bi bi-hash"></i> Student ID</th>
+                        <th><i class="bi bi-person"></i> Name</th>
+                        <th><i class="bi bi-door-open"></i> Room No</th>
+                        <th><i class="bi bi-cash-stack"></i> Fee Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var s in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold">@s.StudentID</td>
+                            <td>@s.StudentName</td>
+                            <td>@s.RoomNo</td>
+                            <td>
+                                @if (s.FeeStatus)
+                                {
+                                    <span class="badge bg-success">Paid</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Unpaid</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>
+

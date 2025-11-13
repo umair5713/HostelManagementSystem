@@ -24,5 +24,13 @@ namespace HostelManagementSystem.Controllers
             students.add_student(student);
             return RedirectToAction("Index");
         }
+
+        public IActionResult SortByID()
+        {
+            students.SortbyID();
+            var sortedList = students.GetStudents();
+            return View("Index", sortedList);
+        }
+
     }
 }
