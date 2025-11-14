@@ -26,7 +26,7 @@ namespace HostelManagementSystem.Controllers
                 HttpContext.Session.SetString("Role", user.FkRoleName);
                 if (user.FkRoleName == "Admin")
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Dashboard", "Admin");
 
                 }
                 else
