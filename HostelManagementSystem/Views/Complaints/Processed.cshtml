@@ -1,0 +1,40 @@
+﻿@model Complaint
+@{
+    ViewData["Title"] = "Processed Complaint";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Processed Complaint</h2>
+
+@if (Model == null)
+{
+    <div class="alert alert-info">No complaints to process.</div>
+    <a asp-action="Queue" class="btn btn-secondary">Back to Queue</a>
+}
+else
+{
+    <table class="table table-bordered">
+        <tr>
+            <th>ID</th>
+            <td>@Model.ComplaintID</td>
+        </tr>
+        <tr>
+            <th>Student Name</th>
+            <td>@Model.StudentName</td>
+        </tr>
+        <tr>
+            <th>Title</th>
+            <td>@Model.Title</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>@Model.Description</td>
+        </tr>
+        <tr>
+            <th>Time</th>
+            <td>@Model.Time.ToString("g")</td>
+        </tr>
+    </table>
+
+    <a asp-action="Queue" class="btn btn-secondary">Back to Queue</a>
+}

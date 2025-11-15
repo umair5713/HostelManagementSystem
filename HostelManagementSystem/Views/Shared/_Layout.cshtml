@@ -93,17 +93,17 @@
             <button data-bs-toggle="collapse" data-bs-target="#studentMenu">👨‍🎓 Student Management</button>
             <div class="collapse" id="studentMenu">
                 <a asp-controller="Student" asp-action="Index" class="ps-4 py-1">All Students</a>
-                <a asp-controller="Student" asp-action="Create" class="ps-4 py-1">Add Student</a>
+                <a asp-controller="Student" asp-action="Register" class="ps-4 py-1">Add Student</a>
                 <a asp-controller="Student" asp-action="Assignments" class="ps-4 py-1">Room Assignment</a>
             </div>
         </div>
 
         <div>
-            <button data-bs-toggle="collapse" data-bs-target="#roomMenu">🛏 Room Management</button>
+            <button data-bs-toggle="collapse" data-bs-target="#roomMenu">🛏 Room Allocation</button>
             <div class="collapse" id="roomMenu">
-                <a asp-controller="Room" asp-action="Index" class="ps-4 py-1">All Rooms</a>
-                <a asp-controller="Room" asp-action="Create" class="ps-4 py-1">Add Room</a>
-                <a asp-controller="Room" asp-action="Availability" class="ps-4 py-1">Room Availability</a>
+                <a asp-controller="RoomAllocation" asp-action="Index" class="ps-4 py-1">All Rooms</a>
+                <a asp-controller="RoomAllocation" asp-action="QueueList" class="ps-4 py-1">Add Room</a>
+                <a asp-controller="RoomAllocation" asp-action="AllocateRoom" class="ps-4 py-1">Room Availability</a>
             </div>
         </div>
 
@@ -118,9 +118,9 @@
         <div>
             <button data-bs-toggle="collapse" data-bs-target="#complaintMenu">📝 Complaint Management</button>
             <div class="collapse" id="complaintMenu">
-                <a asp-controller="Complaint" asp-action="Index" class="ps-4 py-1">All Complaints</a>
+                <a asp-controller="Complaints" asp-action="Queue" class="ps-4 py-1">All Complaints</a>
+                <a asp-controller="Complaint" asp-action="Submit" class="ps-4 py-1">Submit Complaints</a>
                 <a asp-controller="Complaint" asp-action="Pending" class="ps-4 py-1">Pending Complaints</a>
-                <a asp-controller="Complaint" asp-action="Resolved" class="ps-4 py-1">Resolved Complaints</a>
             </div>
         </div>
 

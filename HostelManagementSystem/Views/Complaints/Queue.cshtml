@@ -1,0 +1,53 @@
+﻿@model List<Complaint>
+@{
+    ViewData["Title"] = "Complaint Queue";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Complaint Queue</h2>
+
+<p>
+    <a asp-action="Submit" class="btn btn-primary">Submit New Complaint</a>
+    <a asp-action="Process" class="btn btn-success">Process Next Complaint</a>
+</p>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-info">@TempData["Message"]</div>
+}
+
+@if (Model == null || Model.Count == 0)
+{
+    <p>No complaints in the queue.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Student Name</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var complaint in Model)
+            {
+                <tr>
+                    <td>@complaint.ComplaintID</td>
+                    <td>@complaint.StudentName</td>
+                    <td>@complaint.Title</td>
+                    <td>@complaint.Description</td>
+                    <td>@complaint.Time.ToString("g")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -1,34 +1,34 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using HostelManagementSystem.Models;
+﻿using HostelManagementSystem.Models;
+using HostelManagementSystem.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HostelManagementSystem.Controllers
 {
     public class AttendanceController : Controller
     {
-        public static AttendanceStack attendance = new AttendanceStack();
+        private readonly IAttendanceService _service;
+
+        public AttendanceController(IAttendanceService service)
+        {
+            _service = service;
+        }
 
         public IActionResult Index()
         {
-            var records = attendance.GetAttendanceList();
+            var records = _service.GetAll();
             return View(records);
         }
 
         [HttpPost]
         public IActionResult Mark(string studentName)
         {
-            AttendanceRecord record = new AttendanceRecord
-            {
-                StudentName = studentName,
-                Time = DateTime.Now
-            };
-
-            attendance.Push(record);
+            _service.MarkAttendance(studentName);
             return RedirectToAction("Index");
         }
 
         public IActionResult Undo()
         {
-            attendance.Pop();
+            _service.UndoAttendance();
             return RedirectToAction("Index");
         }
     }
