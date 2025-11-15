@@ -1,0 +1,438 @@
+﻿@* @{
+    ViewData["Title"] = "Student Dashboard";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4 fw-bold">Student Dashboard</h2>
+
+    <div class="row g-4">
+
+        <!-- Attendance -->
+        <div class="col-md-4">
+            <a href="/Attendance/Index" class="text-decoration-none">
+                <div class="card shadow-lg border-0 p-4 text-center dashboard-card">
+                    <h4>📅 Attendance</h4>
+                    <p class="text-muted">View attendance history</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Mess Menu -->
+        <div class="col-md-4">
+            <a href="/Mess/Menu" class="text-decoration-none">
+                <div class="card shadow-lg border-0 p-4 text-center dashboard-card">
+                    <h4>🍽️ Mess Menu</h4>
+                    <p class="text-muted">Check today’s menu</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Room Allocation -->
+        <div class="col-md-4">
+            <a href="/RoomAllocation/QueueList" class="text-decoration-none">
+                <div class="card shadow-lg border-0 p-4 text-center dashboard-card">
+                    <h4>🏠 Room Details</h4>
+                    <p class="text-muted">See your room status</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Student Profile -->
+        <div class="col-md-4">
+            <a href="/Student/Index" class="text-decoration-none">
+                <div class="card shadow-lg border-0 p-4 text-center dashboard-card">
+                    <h4>👤 Student Profile</h4>
+                    <p class="text-muted">View student list</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Sorting & Search -->
+        <div class="col-md-4">
+            <a href="/Student/Sort" class="text-decoration-none">
+                <div class="card shadow-lg border-0 p-4 text-center dashboard-card">
+                    <h4>🔍 Search / Sort</h4>
+                    <p class="text-muted">Find a student quickly</p>
+                </div>
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .dashboard-card {
+        border-radius: 20px;
+        transition: all 0.3s ease;
+    }
+
+        .dashboard-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.2);
+        }
+</style>
+ *@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --info-gradient: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+            --dark-bg: #0f0f23;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-hover: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--dark-bg);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+            body::before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(245, 87, 108, 0.15) 0%, transparent 50%), radial-gradient(circle at 40% 20%, rgba(0, 242, 254, 0.1) 0%, transparent 50%);
+                pointer-events: none;
+                z-index: 0;
+            }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .dashboard-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .dashboard-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .dashboard-card {
+            position: relative;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            overflow: hidden;
+            height: 100%;
+            text-decoration: none;
+            display: block;
+        }
+
+            .dashboard-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: var(--card-hover);
+                opacity: 0;
+                transition: opacity 0.4s ease;
+                z-index: 0;
+            }
+
+            .dashboard-card:hover::before {
+                opacity: 1;
+            }
+
+            .dashboard-card:hover {
+                transform: translateY(-12px) scale(1.02);
+                border-color: rgba(255, 255, 255, 0.2);
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(102, 126, 234, 0.2);
+            }
+
+        .card-icon-wrapper {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
+            z-index: 1;
+        }
+
+        .dashboard-card:hover .card-icon-wrapper {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-1 .card-icon-wrapper {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+        }
+
+        .card-1 .card-icon {
+            color: #667eea;
+        }
+
+        .card-2 .card-icon-wrapper {
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.2) 0%, rgba(245, 87, 108, 0.2) 100%);
+        }
+
+        .card-2 .card-icon {
+            color: #f5576c;
+        }
+
+        .card-3 .card-icon-wrapper {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.2) 0%, rgba(0, 242, 254, 0.2) 100%);
+        }
+
+        .card-3 .card-icon {
+            color: #00f2fe;
+        }
+
+        .card-4 .card-icon-wrapper {
+            background: linear-gradient(135deg, rgba(250, 112, 154, 0.2) 0%, rgba(254, 225, 64, 0.2) 100%);
+        }
+
+        .card-4 .card-icon {
+            color: #fee140;
+        }
+
+        .card-5 .card-icon-wrapper {
+            background: linear-gradient(135deg, rgba(48, 207, 208, 0.2) 0%, rgba(51, 8, 103, 0.2) 100%);
+        }
+
+        .card-5 .card-icon {
+            color: #30cfd0;
+        }
+
+        .card-title {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dashboard-card:hover .card-title {
+            color: #ffffff;
+        }
+
+        .dashboard-card:hover .card-description {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        @@keyframes fadeInDown {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        @@keyframes fadeInUp {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        .col-md-4 {
+            animation: fadeInUp 0.8s ease-out backwards;
+        }
+
+            .col-md-4:nth-child(1) {
+                animation-delay: 0.1s;
+            }
+
+            .col-md-4:nth-child(2) {
+                animation-delay: 0.2s;
+            }
+
+            .col-md-4:nth-child(3) {
+                animation-delay: 0.3s;
+            }
+
+            .col-md-4:nth-child(4) {
+                animation-delay: 0.4s;
+            }
+
+            .col-md-4:nth-child(5) {
+                animation-delay: 0.5s;
+            }
+
+        @@media (max-width: 768px) {
+            .dashboard-title
+
+        {
+            font-size: 2.5rem;
+        }
+
+        .dashboard-card {
+            padding: 2rem 1.5rem;
+        }
+
+        .card-icon-wrapper {
+            width: 70px;
+            height: 70px;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+        }
+
+        }
+
+        /* Glassmorphism enhancement */
+        @@supports (backdrop-filter: blur(20px)) {
+            .dashboard-card
+
+        {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5 py-5">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Student Portal</h1>
+            <p class="dashboard-subtitle">Access all your essential student services in one place</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Attendance -->
+            <div class="col-md-4">
+                <a href="/Attendance/Index" class="dashboard-card card-1">
+                    <div class="card-icon-wrapper">
+                        <i class="fas fa-calendar-check card-icon"></i>
+                    </div>
+                    <h4 class="card-title">Attendance</h4>
+                    <p class="card-description">Track your attendance records and view detailed history</p>
+                </a>
+            </div>
+
+            <!-- Mess Menu -->
+            <div class="col-md-4">
+                <a href="/Mess/Menu" class="dashboard-card card-2">
+                    <div class="card-icon-wrapper">
+                        <i class="fas fa-utensils card-icon"></i>
+                    </div>
+                    <h4 class="card-title">Mess Menu</h4>
+                    <p class="card-description">Explore today's menu and weekly meal plans</p>
+                </a>
+            </div>
+
+            <!-- Room Allocation -->
+            <div class="col-md-4">
+                <a href="/RoomAllocation/QueueList" class="dashboard-card card-3">
+                    <div class="card-icon-wrapper">
+                        <i class="fas fa-door-open card-icon"></i>
+                    </div>
+                    <h4 class="card-title">Room Details</h4>
+                    <p class="card-description">Check your room allocation and status</p>
+                </a>
+            </div>
+
+            <!-- Student Profile -->
+            <div class="col-md-4">
+                <a href="/Student/Index" class="dashboard-card card-4">
+                    <div class="card-icon-wrapper">
+                        <i class="fas fa-user-graduate card-icon"></i>
+                    </div>
+                    <h4 class="card-title">Student Profile</h4>
+                    <p class="card-description">View and manage student information</p>
+                </a>
+            </div>
+
+            <!-- Sorting & Search -->
+            <div class="col-md-4">
+                <a href="/Student/Sort" class="dashboard-card card-5">
+                    <div class="card-icon-wrapper">
+                        <i class="fas fa-search card-icon"></i>
+                    </div>
+                    <h4 class="card-title">Search & Sort</h4>
+                    <p class="card-description">Find students quickly with advanced filters</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
