@@ -2,7 +2,7 @@
 
 namespace HostelManagementSystem.Repositories
 {
-    public class AttendanceRepository : IAttendance_Repository
+    public class AttendanceRepository : IAttendanceRepository
     {
         private AttendanceStackNode top;
 

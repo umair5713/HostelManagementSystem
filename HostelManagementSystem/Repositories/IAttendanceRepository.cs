@@ -2,7 +2,7 @@
 
 namespace HostelManagementSystem.Repositories
 {
-    public interface IAttendance_Repository
+    public interface IAttendanceRepository
     {
         void Push(AttendanceRecord record);
         AttendanceRecord Pop();

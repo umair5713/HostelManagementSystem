@@ -1,0 +1,24 @@
+﻿@model Complaint
+@{
+    ViewData["Title"] = "Submit Complaint";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Submit Complaint</h2>
+
+<form asp-action="Submit" method="post">
+    <div class="mb-3">
+        <label asp-for="StudentName" class="form-label">Student Name</label>
+        <input asp-for="StudentName" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label">Complaint Title</label>
+        <input asp-for="Title" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Description</label>
+        <textarea asp-for="Description" class="form-control" rows="4" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit Complaint</button>
+    <a asp-action="Queue" class="btn btn-secondary">Back to Queue</a>
+</form>

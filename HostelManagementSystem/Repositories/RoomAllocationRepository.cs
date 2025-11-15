@@ -1,9 +1,13 @@
-﻿namespace HostelManagementSystem.Models
+﻿using HostelManagementSystem.Models;
+
+namespace HostelManagementSystem.Repositories
+
 {
-    public class RoomQueue
+    public class RoomAllocationRepository : IRoomAllocationRepository
     {
-        private RoomQueueNode front;
-        private RoomQueueNode back;
+       
+        private RoomQueueNode? front;
+        private RoomQueueNode? back;
 
         public void enqueue(Student student)
         {
@@ -44,7 +48,7 @@
         public List<Student> get_queue()
         {
             List<Student> list = new List<Student>();
-            RoomQueueNode temp = front;
+            RoomQueueNode? temp = front;
 
             while (temp != null)
             {
@@ -55,4 +59,3 @@
         }
     }
 }
-

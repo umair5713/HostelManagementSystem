@@ -2,7 +2,7 @@
 
 namespace HostelManagementSystem.Repositories
 {
-    public interface IRoom_Allocation_Repository
+    public interface IRoomAllocationRepository
     {
         void enqueue(Student student);
         Student dequeue();

@@ -2,16 +2,17 @@
 
 namespace HostelManagementSystem.Repositories
 {
-    public class StudentRepository : IStudent_Repository
+    public class StudentRepository : IStudentRepository
     {
         private StudentNode head;
 
-        public void add_student(Student student)
+        public void AddStudent(Student student)
         {
-
-            StudentNode newnode = new StudentNode();
-            newnode.Data = student;
-            newnode.next = null;
+            StudentNode newnode = new StudentNode
+            {
+                Data = student,
+                Next = null
+            };
 
             if (head == null)
             {
@@ -20,112 +21,98 @@ namespace HostelManagementSystem.Repositories
             }
 
             StudentNode current = head;
-            while (current.next != null)
-            {
-                current = current.next;
-            }
-            current.next = newnode;
+            while (current.Next != null)
+                current = current.Next;
+
+            current.Next = newnode;
         }
 
         public List<Student> GetStudents()
         {
-            List<Student> hostellers = new List<Student>();
+            List<Student> list = new List<Student>();
+            StudentNode temp = head;
 
-            StudentNode current = head;
-
-            while (current != null)
+            while (temp != null)
             {
-                hostellers.Add(current.Data);
-                current = current.next;
+                list.Add(temp.Data);
+                temp = temp.Next;
             }
-            return hostellers;
+
+            return list;
         }
 
-        public void SortbyID()
+        public void SortByID()
         {
-            head = merge_sort(head);
+            head = MergeSort(head);
         }
 
-        private StudentNode merge_sort(StudentNode h)
+        public StudentNode MergeSort(StudentNode h)
         {
-            //base case
-            if (h == null || h.next == null)
-            {
+            if (h == null || h.Next == null)
                 return h;
-            }
 
-            //divide the linked list int 2 halves
-            StudentNode mid = get_middle(h);
+            StudentNode mid = GetMiddle(h);
 
             StudentNode left = h;
-            StudentNode right = mid.next;
-            mid.next = null;
+            StudentNode right = mid.Next;
+            mid.Next = null;
 
-            //recursvie calls to sort both halves
-            left = merge_sort(left);
-            right = merge_sort(right);
+            left = MergeSort(left);
+            right = MergeSort(right);
 
-            //merge both left and right halves
-            StudentNode result = merge(left, right);
-
-            return result;
+            return Merge(left, right);
         }
 
-        private StudentNode merge(StudentNode left, StudentNode right)
+        public StudentNode Merge(StudentNode left, StudentNode right)
         {
-            if (left == null)
-                return right;
-
-            if (right == null)
-                return left;
+            if (left == null) return right;
+            if (right == null) return left;
 
             StudentNode dummy = new StudentNode();
             StudentNode temp = dummy;
 
-            //merge 2 sorted linked lists
             while (left != null && right != null)
             {
                 if (left.Data.StudentID <= right.Data.StudentID)
                 {
-                    temp.next = left;
+                    temp.Next = left;
                     temp = left;
-                    left = left.next;
+                    left = left.Next;
                 }
                 else
                 {
-                    temp.next = right;
+                    temp.Next = right;
                     temp = right;
-                    right = right.next;
+                    right = right.Next;
                 }
             }
 
             while (left != null)
             {
-                temp.next = left;
+                temp.Next = left;
                 temp = left;
-                left = left.next;
+                left = left.Next;
             }
 
             while (right != null)
             {
-                temp.next = right;
+                temp.Next = right;
                 temp = right;
-                right = right.next;
+                right = right.Next;
             }
-            //answer = answer.next;
-            return dummy.next;
+
+            return dummy.Next;
         }
 
-
-        private StudentNode get_middle(StudentNode h)
+        public StudentNode GetMiddle(StudentNode h)
         {
             StudentNode slow = h;
-            StudentNode fast = h.next;
+            StudentNode fast = h.Next;
 
-            while (fast != null && fast.next != null)
+            while (fast != null && fast.Next != null)
             {
-                slow = slow.next;
-                fast = fast.next.next;
+                slow = slow.Next;
+                fast = fast.Next.Next;
             }
 
             return slow;
