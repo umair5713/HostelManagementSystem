@@ -1,0 +1,33 @@
+﻿@model IEnumerable<HostelManagementSystem.Models.Menu>
+
+<div class="container mt-4">
+    <h2>Daily Menus</h2>
+    <a asp-action="AddMenu" class="btn btn-success mb-3">+ Add New Menu</a>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Date</th>
+                <th>Breakfast</th>
+                <th>Lunch</th>
+                <th>Dinner</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in Model)
+            {
+                <tr>
+                    <td>@m.Date</td>
+                    <td>@m.Breakfast</td>
+                    <td>@m.Lunch</td>
+                    <td>@m.Dinner</td>
+                    <td>
+                        <a asp-action="EditMenu" asp-route-date="@m.Date" class="btn btn-primary btn-sm">Edit</a>
+                        <a asp-action="DeleteMenu" asp-route-date="@m.Date" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

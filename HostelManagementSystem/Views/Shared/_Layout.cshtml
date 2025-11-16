@@ -87,8 +87,10 @@
     <div class="sidebar">
         <h2>HOSTEL ADMIN</h2>
 
+        <!-- Dashboard -->
         <a asp-controller="Admin" asp-action="Dashboard">📊 Dashboard</a>
 
+        <!-- Student Management -->
         <div>
             <button data-bs-toggle="collapse" data-bs-target="#studentMenu">👨‍🎓 Student Management</button>
             <div class="collapse" id="studentMenu">
@@ -98,32 +100,44 @@
             </div>
         </div>
 
+        <!-- Room Allocation -->
         <div>
             <button data-bs-toggle="collapse" data-bs-target="#roomMenu">🛏 Room Allocation</button>
             <div class="collapse" id="roomMenu">
                 <a asp-controller="RoomAllocation" asp-action="Index" class="ps-4 py-1">All Rooms</a>
-                <a asp-controller="RoomAllocation" asp-action="QueueList" class="ps-4 py-1">Add Room</a>
-                <a asp-controller="RoomAllocation" asp-action="AllocateRoom" class="ps-4 py-1">Room Availability</a>
+                <a asp-controller="RoomAllocation" asp-action="AddRoom" class="ps-4 py-1">Add Room</a>
+                <a asp-controller="RoomAllocation" asp-action="Availability" class="ps-4 py-1">Room Availability</a>
             </div>
         </div>
 
+        <!-- Mess Management -->
         <div>
-            <button data-bs-toggle="collapse" data-bs-target="#hostelMenu">🏢 Attendance Management</button>
-            <div class="collapse" id="hostelMenu">
+            <button data-bs-toggle="collapse" data-bs-target="#messMenu">🍽 Mess Management</button>
+            <div class="collapse" id="messMenu">
+
+                <!-- Menu Management -->
+                <a asp-controller="Menu" asp-action="Index" class="ps-4 py-1">Daily Menu</a>
+                <a asp-controller="Menu" asp-action="AddMenu" class="ps-4 py-1">Create Menu</a>
+
+                <!-- Attendance -->
                 <a asp-controller="Attendance" asp-action="Index" class="ps-4 py-1">Attendance Tracker</a>
-                <a asp-controller="Hostel" asp-action="Facilities" class="ps-4 py-1">Manage Facilities</a>
+
+                <!-- Billing -->
+                <a asp-controller="Billing" asp-action="Index" class="ps-4 py-1">Billing Records</a>
             </div>
         </div>
 
+        <!-- Complaints -->
         <div>
             <button data-bs-toggle="collapse" data-bs-target="#complaintMenu">📝 Complaint Management</button>
             <div class="collapse" id="complaintMenu">
-                <a asp-controller="Complaints" asp-action="Queue" class="ps-4 py-1">All Complaints</a>
-                <a asp-controller="Complaint" asp-action="Submit" class="ps-4 py-1">Submit Complaints</a>
-                <a asp-controller="Complaint" asp-action="Pending" class="ps-4 py-1">Pending Complaints</a>
+                <a asp-controller="Complaints" asp-action="Index" class="ps-4 py-1">All Complaints</a>
+                <a asp-controller="Complaints" asp-action="Pending" class="ps-4 py-1">Pending Complaints</a>
+                <a asp-controller="Complaints" asp-action="Resolved" class="ps-4 py-1">Resolved Complaints</a>
             </div>
         </div>
 
+        <!-- Payments -->
         <div>
             <button data-bs-toggle="collapse" data-bs-target="#paymentMenu">💳 Payments & Fees</button>
             <div class="collapse" id="paymentMenu">
@@ -133,6 +147,7 @@
             </div>
         </div>
 
+        <!-- Staff -->
         <div>
             <button data-bs-toggle="collapse" data-bs-target="#staffMenu">👷 Staff Management</button>
             <div class="collapse" id="staffMenu">
@@ -141,6 +156,7 @@
             </div>
         </div>
 
+        <!-- Settings -->
         <div>
             <button data-bs-toggle="collapse" data-bs-target="#settingsMenu">⚙ Settings</button>
             <div class="collapse" id="settingsMenu">
@@ -149,8 +165,10 @@
             </div>
         </div>
 
+        <!-- Logout -->
         <a asp-controller="Auth" asp-action="Logout" class="btn btn-danger mt-3 w-100">🚪 Logout</a>
     </div>
+
 
     <!-- Main content -->
     <div class="content">

@@ -1,0 +1,23 @@
+﻿@model Menu
+<h2>Edit Menu</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Date)
+        @Html.TextBoxFor(m => m.Date, new { @class = "form-control", type = "date", @readonly = "readonly" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Breakfast)
+        @Html.TextBoxFor(m => m.Breakfast, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Lunch)
+        @Html.TextBoxFor(m => m.Lunch, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Dinner)
+        @Html.TextBoxFor(m => m.Dinner, new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+}
