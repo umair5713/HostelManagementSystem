@@ -16,4 +16,4 @@ namespace HostelManagementSystem.Repositories
         }
     }
 
-}
+
