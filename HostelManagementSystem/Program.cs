@@ -22,6 +22,12 @@ builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IComplaintRepository, ComplaintRepository>();
 builder.Services.AddScoped<IComplaintService, ComplaintService>();
 
+builder.Services.AddSingleton<IMenuRepository, MenuRepository>();
+builder.Services.AddSingleton<IMenuService, MenuService>();
+
+builder.Services.AddScoped<IBillingRepository, BillingRepository>();
+builder.Services.AddScoped<IBillingService, BillingService>();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

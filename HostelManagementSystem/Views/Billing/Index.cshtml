@@ -1,0 +1,29 @@
+﻿@model IEnumerable<HostelManagementSystem.Models.Bill>
+
+<h2>All Bills</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Student ID</th>
+            <th>Total Meals</th>
+            <th>Amount</th>
+            <th>Is Paid</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bill in Model)
+        {
+            <tr>
+                <td>@bill.StudentId</td>
+                <td>@bill.TotalMeals</td>
+                <td>@bill.Amount</td>
+                <td>@(bill.IsPaid ? "Yes" : "No")</td>
+                <td>
+                    <a asp-action="Details" asp-route-studentId="@bill.StudentId" class="btn btn-primary btn-sm">View</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,67 @@
+﻿@model HostelManagementSystem.Models.Menu
+
+@{
+    ViewData["Title"] = "Add Menu";
+}
+
+<div class="container mt-4">
+    <h2>Create Daily Menu</h2>
+
+    <form asp-action="AddMenu" method="post">
+
+        <!-- Date -->
+        <div class="mb-3">
+            <label class="form-label">Date</label>
+            <input asp-for="Date" type="date" class="form-control" required />
+        </div>
+
+        <!-- Breakfast -->
+        <div class="mb-3">
+            <label class="form-label">Breakfast</label>
+            <select id="breakfastSelect" class="form-control">
+                <option value="">-- Select Default Breakfast --</option>
+                <option value="Paratha, Omelette, Tea">Paratha, Omelette, Tea</option>
+                <option value="Bread, Butter, Jam">Bread, Butter, Jam</option>
+            </select>
+            <textarea asp-for="Breakfast" id="breakfastText" class="form-control mt-2" rows="3"></textarea>
+        </div>
+
+        <!-- Lunch -->
+        <div class="mb-3">
+            <label class="form-label">Lunch</label>
+            <select id="lunchSelect" class="form-control">
+                <option value="">-- Select Default Lunch --</option>
+                <option value="Chicken Karahi, Daal, Roti">Chicken Karahi, Daal, Roti</option>
+                <option value="Beef Curry, Rice, Salad">Beef Curry, Rice, Salad</option>
+            </select>
+            <textarea asp-for="Lunch" id="lunchText" class="form-control mt-2" rows="3"></textarea>
+        </div>
+
+        <!-- Dinner -->
+        <div class="mb-3">
+            <label class="form-label">Dinner</label>
+            <select id="dinnerSelect" class="form-control">
+                <option value="">-- Select Default Dinner --</option>
+                <option value="Biryani, Kebab, Cold Drink">Biryani, Kebab, Cold Drink</option>
+                <option value="Pasta, Garlic Bread, Salad">Pasta, Garlic Bread, Salad</option>
+            </select>
+            <textarea asp-for="Dinner" id="dinnerText" class="form-control mt-2" rows="3"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Menu</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById("breakfastSelect").addEventListener("change", function () {
+        document.getElementById("breakfastText").value = this.value;
+    });
+
+    document.getElementById("lunchSelect").addEventListener("change", function () {
+        document.getElementById("lunchText").value = this.value;
+    });
+
+    document.getElementById("dinnerSelect").addEventListener("change", function () {
+        document.getElementById("dinnerText").value = this.value;
+    });
+</script>
