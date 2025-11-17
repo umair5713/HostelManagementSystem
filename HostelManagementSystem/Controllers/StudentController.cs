@@ -7,10 +7,12 @@ namespace HostelManagementSystem.Controllers
     public class StudentController : Controller
     {
         private readonly IStudentService _service;
+        private readonly IComplaintService _complaintService;
 
-        public StudentController(IStudentService service)
+        public StudentController(IStudentService service, IComplaintService complaintService)
         {
             _service = service;
+            _complaintService = complaintService;
         }
 
         public IActionResult Index()
@@ -38,15 +40,11 @@ namespace HostelManagementSystem.Controllers
             return View("~/Views/Student/Index.cshtml", sorted);
         }
 
-        // ✅ ADD THIS NEW METHOD
         public IActionResult Dashboard()
         {
-            // For now, using hardcoded data
-            // Later you can fetch from database using student ID from session
-
             var viewModel = new StudentDashboardViewModel
             {
-                StudentName = "Ahmad Ali", // Replace with logged-in student
+                StudentName = "Ahmad Ali",
                 RoomNumber = "A-201",
                 CurrentDate = DateTime.Now,
                 CurfewTime = "10:00 PM",
@@ -83,6 +81,35 @@ namespace HostelManagementSystem.Controllers
             };
 
             return View("~/Views/Student/Dashboard.cshtml", viewModel);
+        }
+
+        // STUDENT: View their complaints
+        public IActionResult MyComplaints()
+        {
+            // TODO: Get student name from session/auth
+            string studentName = "Ahmad Ali"; // Replace with actual logged-in student
+
+            var complaints = _complaintService.GetComplaintsByStudent(studentName);
+            return View("~/Views/Student/MyComplaints.cshtml", complaints);
+        }
+
+        // STUDENT: Submit complaint form
+        [HttpGet]
+        public IActionResult SubmitComplaint()
+        {
+            return View("~/Views/Student/SubmitComplaint.cshtml");
+        }
+
+        // STUDENT: Submit complaint action
+        [HttpPost]
+        public IActionResult SubmitComplaint(Complaint complaint)
+        {
+            // TODO: Get student name from session/auth
+            complaint.StudentName = "Ahmad Ali"; // Replace with actual logged-in student
+
+            _complaintService.SubmitComplaint(complaint);
+            TempData["Success"] = "Complaint submitted successfully!";
+            return RedirectToAction("MyComplaints");
         }
     }
 }
