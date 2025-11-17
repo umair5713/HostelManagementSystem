@@ -1,0 +1,369 @@
+﻿@model HostelManagementSystem.Models.StudentDashboardViewModel
+
+@{
+    ViewData["Title"] = "Student Dashboard";
+}
+
+<!-- Welcome Header -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="content-card" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 30px;">
+            <h2 style="margin: 0 0 10px 0; font-weight: 700;">Welcome, @Model.StudentName! 👋</h2>
+            <p style="margin: 0; font-size: 16px; opacity: 0.9;">@Model.CurrentDate.ToString("dddd, MMMM dd, yyyy")</p>
+        </div>
+    </div>
+</div>
+
+<!-- Dashboard Stats Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="dashboard-card">
+            <div class="card-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                <i class="fas fa-door-open"></i>
+            </div>
+            <h3>@Model.RoomNumber</h3>
+            <p>Your Room</p>
+            <div class="card-trend">
+                <i class="fas fa-building"></i> @Model.Stats.HostelBlock
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="dashboard-card">
+            <div class="card-icon" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <h3>@Model.Stats.TotalAttendance%</h3>
+            <p>Attendance</p>
+            <div class="card-trend">
+                <i class="fas fa-arrow-up"></i> Good standing
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="dashboard-card">
+            <div class="card-icon" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <h3>@Model.Stats.PendingComplaints</h3>
+            <p>Pending Complaints</p>
+            <div class="card-trend @(Model.Stats.PendingComplaints > 0 ? "urgent" : "")">
+                <i class="fas @(Model.Stats.PendingComplaints > 0 ? "fa-clock" : "fa-check-circle")"></i>
+                @(Model.Stats.PendingComplaints > 0 ? "In Progress" : "All Clear")
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="dashboard-card">
+            <div class="card-icon" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                <i class="fas fa-rupee-sign"></i>
+            </div>
+            <h3>Rs. @Model.Stats.OutstandingBills</h3>
+            <p>Outstanding Bills</p>
+            <div class="card-trend @(Model.Stats.OutstandingBills > 0 ? "urgent" : "")">
+                <i class="fas @(Model.Stats.OutstandingBills > 0 ? "fa-exclamation-triangle" : "fa-check-circle")"></i>
+                @(Model.Stats.OutstandingBills > 0 ? "Payment Due" : "Paid")
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content Row -->
+<div class="row g-4">
+    <!-- Left Column: Curfew & Hostel Info -->
+    <div class="col-md-8">
+        <!-- Curfew Time Card -->
+        <div class="content-card mb-4">
+            <div class="card-header-custom">
+                <h4><i class="fas fa-clock"></i> Important Information</h4>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="info-box" style="background: linear-gradient(135deg, rgba(245, 87, 108, 0.1), rgba(240, 147, 251, 0.1)); border-left: 4px solid #f5576c;">
+                        <h5 style="color: #f5576c; margin-bottom: 10px;">
+                            <i class="fas fa-moon"></i> Curfew Time
+                        </h5>
+                        <h2 style="margin: 10px 0; color: #2d3748;">@Model.CurfewTime</h2>
+                        <p style="color: #718096; margin: 0; font-size: 13px;">Please return before this time</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-box" style="background: linear-gradient(135deg, rgba(79, 172, 254, 0.1), rgba(0, 242, 254, 0.1)); border-left: 4px solid #4facfe;">
+                        <h5 style="color: #4facfe; margin-bottom: 10px;">
+                            <i class="fas fa-phone"></i> Emergency Contact
+                        </h5>
+                        <p style="margin: 5px 0; color: #2d3748;"><strong>Warden:</strong> +92-321-1234567</p>
+                        <p style="margin: 5px 0; color: #2d3748;"><strong>Security:</strong> +92-300-9876543</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions Card -->
+        <div class="content-card">
+            <div class="card-header-custom">
+                <h4><i class="fas fa-bolt"></i> Quick Actions</h4>
+            </div>
+            <div class="quick-actions">
+                <a href="@Url.Action("Index", "Attendance")" class="action-btn" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>View Attendance</span>
+                </a>
+                <a href="@Url.Action("Create", "Complaints")" class="action-btn" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>Lodge Complaint</span>
+                </a>
+                <a href="@Url.Action("Index", "Billing")" class="action-btn" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <span>View Bills</span>
+                </a>
+                <a href="@Url.Action("Index", "Menu")" class="action-btn" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+                    <i class="fas fa-calendar-week"></i>
+                    <span>Weekly Menu</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Today's Menu -->
+    <div class="col-md-4">
+        <div class="content-card">
+            <div class="card-header-custom">
+                <h4><i class="fas fa-utensils"></i> Today's Menu</h4>
+            </div>
+            <div class="menu-preview">
+                @foreach (var meal in Model.TodaysMenu)
+                {
+                    <div class="menu-item">
+                        <div class="menu-icon">
+                            @if (meal.MealType == "Breakfast")
+                            {
+                                <text>🌅</text>
+                            }
+                            else if (meal.MealType == "Lunch")
+                            {
+                                <text>🌞</text>
+                            }
+                            else
+                            {
+                                <text>🌙</text>
+                            }
+                        </div>
+                        <div>
+                            <h5>@meal.MealType</h5>
+                            <p>@meal.Description</p>
+                            <span class="meal-time">
+                                <i class="fas fa-clock"></i> @meal.Time
+                            </span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Dashboard Cards */
+    .dashboard-card {
+        background: white;
+        border-radius: 20px;
+        padding: 25px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid rgba(102, 126, 234, 0.1);
+    }
+
+        .dashboard-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+        }
+
+        .dashboard-card h3 {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 10px 0;
+            color: #2d3748;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .dashboard-card p {
+            color: #718096;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+    .card-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+        .card-icon i {
+            font-size: 28px;
+            color: white;
+        }
+
+    .card-trend {
+        margin-top: 12px;
+        font-size: 13px;
+        color: #48bb78;
+        font-weight: 600;
+    }
+
+        .card-trend i {
+            margin-right: 5px;
+        }
+
+        .card-trend.urgent {
+            color: #f56565;
+        }
+
+    /* Content Cards */
+    .content-card {
+        background: white;
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(102, 126, 234, 0.1);
+    }
+
+    .card-header-custom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+    }
+
+        .card-header-custom h4 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .card-header-custom i {
+            margin-right: 10px;
+            color: #667eea;
+        }
+
+    /* Info Boxes */
+    .info-box {
+        padding: 20px;
+        border-radius: 15px;
+        height: 100%;
+        transition: all 0.3s;
+    }
+
+        .info-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+    /* Quick Actions */
+    .quick-actions {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .action-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 25px 20px;
+        border-radius: 15px;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        text-align: center;
+    }
+
+        .action-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            color: white;
+        }
+
+        .action-btn i {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .action-btn span {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+    /* Menu Preview */
+    .menu-preview {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .menu-item {
+        display: flex;
+        gap: 15px;
+        padding: 15px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+        border-radius: 12px;
+        transition: all 0.3s;
+    }
+
+        .menu-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+        }
+
+    .menu-icon {
+        font-size: 32px;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .menu-item h5 {
+        margin: 0 0 5px 0;
+        font-size: 15px;
+        font-weight: 600;
+        color: #2d3748;
+    }
+
+    .menu-item p {
+        margin: 0 0 8px 0;
+        font-size: 13px;
+        color: #718096;
+    }
+
+    .meal-time {
+        font-size: 12px;
+        color: #a0aec0;
+        font-style: italic;
+    }
+
+        .meal-time i {
+            margin-right: 5px;
+        }
+   }
