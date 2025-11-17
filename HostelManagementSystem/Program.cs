@@ -10,23 +10,23 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 
-builder.Services.AddScoped<IRoomAllocationRepository, RoomAllocationRepository>();
-builder.Services.AddScoped<IRoomAllocationService, RoomAllocationService>();
+builder.Services.AddSingleton<IRoomAllocationRepository, RoomAllocationRepository>();
+builder.Services.AddSingleton<IRoomAllocationService, RoomAllocationService>();
 
-builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
-builder.Services.AddScoped<IAttendanceService, AttendanceService>();
+builder.Services.AddSingleton<IAttendanceRepository, AttendanceRepository>();
+builder.Services.AddSingleton<IAttendanceService, AttendanceService>();
 
-builder.Services.AddScoped<IStudentRepository, StudentRepository>();
-builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddSingleton<IStudentRepository, StudentRepository>();
+builder.Services.AddSingleton<IStudentService, StudentService>();
 
-builder.Services.AddScoped<IComplaintRepository, ComplaintRepository>();
-builder.Services.AddScoped<IComplaintService, ComplaintService>();
+builder.Services.AddSingleton<IComplaintRepository, ComplaintRepository>();
+builder.Services.AddSingleton<IComplaintService, ComplaintService>();
 
 builder.Services.AddSingleton<IMenuRepository, MenuRepository>();
 builder.Services.AddSingleton<IMenuService, MenuService>();
 
-builder.Services.AddScoped<IBillingRepository, BillingRepository>();
-builder.Services.AddScoped<IBillingService, BillingService>();
+builder.Services.AddSingleton<IBillingRepository, BillingRepository>();
+builder.Services.AddSingleton<IBillingService, BillingService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
