@@ -1,4 +1,5 @@
-﻿using HostelManagementSystem.Models;
+﻿
+using HostelManagementSystem.Models;
 using HostelManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,3 +34,4 @@ namespace HostelManagementSystem.Controllers
         }
     }
 }
+
