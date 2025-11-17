@@ -34,61 +34,64 @@
                     <i class="fas fa-hotel logo-icon"></i>
                     <div>
                         <h2>CAMPUS NEST</h2>
-                        <span class="logo-subtitle">Admin Panel</span>
+                        <span class="logo-subtitle">User Panel</span>
                     </div>
                 </div>
             </div>
 
             <nav class="sidebar-nav">
-                <a href="/Admin/Dashboard" class="nav-item active">
+                <!-- Dashboard -->
+                <a href="/Student/Dashboard" class="nav-item active">
                     <i class="fas fa-chart-line nav-icon"></i>
                     <span>Dashboard</span>
                     <div class="nav-glow"></div>
                 </a>
-                <a href="/Student/Register" class="nav-item">
-                    <i class="fas fa-user-graduate nav-icon"></i>
-                    <span>Students</span>
-                    <div class="nav-glow"></div>
-                </a>
-                <a href="/RoomAllocation/Index" class="nav-item">
-                    <i class="fas fa-bed nav-icon"></i>
-                    <span>Rooms</span>
-                    <div class="nav-glow"></div>
-                </a>
+
+                <!-- Daily Mess / Menu -->
                 <a href="/Menu/Index" class="nav-item">
                     <i class="fas fa-utensils nav-icon"></i>
-                    <span>Mess</span>
+                    <span>Daily Menu</span>
                     <div class="nav-glow"></div>
                 </a>
-                <a href="/Complaints/Index" class="nav-item">
-                    <i class="fas fa-exclamation-circle nav-icon"></i>
-                    <span>Complaints</span>
-                    <div class="nav-glow"></div>
-                </a>
-                <a href="/Billing/Index" class="nav-item">
-                    <i class="fas fa-wallet nav-icon"></i>
-                    <span>Payments</span>
-                    <div class="nav-glow"></div>
-                </a>
+
+                <!-- Attendance / Meal History -->
                 <a href="/Attendance/Index" class="nav-item">
                     <i class="fas fa-clipboard-check nav-icon"></i>
-                    <span>Attendance</span>
+                    <span>View Attendance</span>
+                    <div class="nav-glow"></div>
+                </a>
+
+                <!-- Billing / Payments -->
+                <a href="/Billing/Index" class="nav-item">
+                    <i class="fas fa-wallet nav-icon"></i>
+                    <span>My Bill</span>
+                    <div class="nav-glow"></div>
+                </a>
+
+                <!-- Submit Complaints -->
+                <a href="/Complaints/Submit" class="nav-item">
+                    <i class="fas fa-exclamation-circle nav-icon"></i>
+                    <span>Submit Complaint</span>
+                    <div class="nav-glow"></div>
+                </a>
+
+                <!-- View My Complaints -->
+                <a href="/Complaints/Queue" class="nav-item">
+                    <i class="fas fa-list-alt nav-icon"></i>
+                    <span>My Complaints</span>
                     <div class="nav-glow"></div>
                 </a>
 
                 <div class="nav-separator"></div>
 
-                <a href="/Admin/Settings" class="nav-item">
-                    <i class="fas fa-cog nav-icon"></i>
-                    <span>Settings</span>
-                    <div class="nav-glow"></div>
-                </a>
+                <!-- Logout -->
                 <a href="/Auth/Logout" class="nav-item">
                     <i class="fas fa-sign-out-alt nav-icon"></i>
                     <span>Logout</span>
                     <div class="nav-glow"></div>
                 </a>
             </nav>
+
         </aside>
 
         <!-- Main Content Area -->

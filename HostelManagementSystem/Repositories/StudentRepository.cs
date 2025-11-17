@@ -4,7 +4,7 @@ namespace HostelManagementSystem.Repositories
 {
     public class StudentRepository : IStudentRepository
     {
-        private StudentNode head;
+        private static StudentNode head;
 
         public void AddStudent(Student student)
         {
