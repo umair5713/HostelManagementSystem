@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Student Dashboard";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
 }
 
 <!-- Welcome Header -->
@@ -117,7 +118,7 @@
                     <i class="fas fa-file-invoice-dollar"></i>
                     <span>View Bills</span>
                 </a>
-                <a href="@Url.Action("Index", "Menu")" class="action-btn" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+                <a href="@Url.Action("Index", "StudentMenu")" class="action-btn" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
                     <i class="fas fa-calendar-week"></i>
                     <span>Weekly Menu</span>
                 </a>

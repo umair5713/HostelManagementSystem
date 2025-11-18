@@ -1,0 +1,11 @@
+﻿using HostelManagementSystem.Models;
+
+namespace HostelManagementSystem.Repositories
+{
+    public interface IStudentMealRepository
+    {
+        void AcceptMeal(StudentMeal meal);
+        List<StudentMeal> GetMealsByStudent(int studentId);
+        bool HasAccepted(int studentId, string date, string mealType);
+    }
+}

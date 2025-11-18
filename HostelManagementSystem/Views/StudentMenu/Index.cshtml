@@ -1,0 +1,47 @@
+﻿@model IEnumerable<HostelManagementSystem.Models.Menu>
+@{
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+<h2 class="mt-3">Daily Menu</h2>
+
+@if (!Model.Any())
+{
+    <p>No menus available today.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Date</th>
+                <th>Breakfast</th>
+                <th>Lunch</th>
+                <th>Dinner</th>
+                <th>Accept Meals</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var menu in Model)
+            {
+                <tr>
+                    <td>@menu.Date</td>
+                    <td>@menu.Breakfast</td>
+                    <td>@menu.Lunch</td>
+                    <td>@menu.Dinner</td>
+                    <td>
+
+                        <form asp-action="AcceptAllMeals" method="post">
+                            <input type="hidden" name="date" value="@menu.Date" />
+                            <button type="submit" class="btn btn-sm btn-info w-100">Accept All</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
