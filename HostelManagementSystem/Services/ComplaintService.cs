@@ -15,10 +15,11 @@ namespace HostelManagementSystem.Services
         public void SubmitComplaint(Complaint complaint)
         {
             complaint.Time = DateTime.Now;
+            complaint.Status = "Pending";
             _repo.Enqueue(complaint);
         }
 
-        public Complaint ProcessComplaint()
+        public Complaint? ProcessComplaint()
         {
             return _repo.Dequeue();
         }
@@ -31,6 +32,27 @@ namespace HostelManagementSystem.Services
         public bool IsEmpty()
         {
             return _repo.IsEmpty();
+        }
+
+        public void UpdateComplaintStatus(int complaintId, string status)
+        {
+            _repo.UpdateStatus(complaintId, status);
+        }
+
+        public Complaint? GetComplaintById(int complaintId)
+        {
+            return _repo.GetById(complaintId);
+        }
+
+        public List<Complaint> GetComplaintsByStudent(string studentName)
+        {
+            return _repo.GetByStudent(studentName);
+        }
+
+        // ✅ New method to add a complaint directly
+        public void AddComplaint(Complaint complaint)
+        {
+            _repo.AddComplaint(complaint);
         }
     }
 }

@@ -1,0 +1,113 @@
+﻿@model List<Complaint>
+@{
+    ViewData["Title"] = "Complaints Management";
+}
+
+<div class="content-card">
+    <div class="card-header-custom">
+        <h4><i class="fas fa-exclamation-circle"></i> Complaints Management</h4>
+    </div>
+
+    @if (Model == null || Model.Count == 0)
+    {
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> No complaints submitted yet.
+        </div>
+    }
+    else
+    {
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Student Name</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var complaint in Model)
+                {
+                    <tr>
+                        <td>@complaint.ComplaintID</td>
+                        <td>@complaint.StudentName</td>
+                        <td>@complaint.Title</td>
+                        <td>@complaint.Description</td>
+                        <td>@complaint.Time.ToString("g")</td>
+                        <td>
+                            @if (complaint.Status == "Pending")
+                            {
+                                <span class="badge bg-warning">Pending</span>
+                            }
+                            else if (complaint.Status == "Received")
+                            {
+                                <span class="badge bg-info">Received</span>
+                            }
+                            else if (complaint.Status == "In Progress")
+                            {
+                                <span class="badge bg-primary">In Progress</span>
+                            }
+                            else if (complaint.Status == "Done")
+                            {
+                                <span class="badge bg-success">Done</span>
+                            }
+                        </td>
+                        <td class="action-buttons">
+                            @if (complaint.Status == "Pending")
+                            {
+                                <form asp-action="MarkReceived" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="@complaint.ComplaintID" />
+                                    <button type="submit" class="btn-edit">Received</button>
+                                </form>
+                            }
+                            @if (complaint.Status == "Received" || complaint.Status == "Pending")
+                            {
+                                <form asp-action="MarkInProgress" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="@complaint.ComplaintID" />
+                                    <button type="submit" class="btn-view">In Progress</button>
+                                </form>
+                            }
+                            @if (complaint.Status == "In Progress" || complaint.Status == "Received")
+                            {
+                                <form asp-action="MarkDone" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="@complaint.ComplaintID" />
+                                    <button type="submit" class="btn-delete">Done</button>
+                                </form>
+                            }
+                            <a asp-action="Details" asp-route-id="@complaint.ComplaintID" class="btn-view">
+                                <i class="fas fa-eye"></i> View
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<style>
+    .badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .bg-warning { background: #f59e0b; color: white; }
+    .bg-info { background: #3b82f6; color: white; }
+    .bg-primary { background: #8b5cf6; color: white; }
+    .bg-success { background: #10b981; color: white; }
+
+    .alert-info {
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        color: #3b82f6;
+        padding: 15px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+</style>

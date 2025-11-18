@@ -1,5 +1,4 @@
-﻿/*
-using HostelManagementSystem.Models;
+﻿using HostelManagementSystem.Models;
 using HostelManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,124 +13,67 @@ namespace HostelManagementSystem.Controllers
             _service = service;
         }
 
-        public IActionResult Queue()
-        {
-            var complaints = _service.GetAllComplaints();
-            return View("~/Views/Complaints/Queue.cshtml", complaints);
-        }
-        [HttpGet]
-        public IActionResult Submit()
-        {
-            return View("~/Views/Complaints/Submit.cshtml");
-        }
-
-        [HttpPost]
-        public IActionResult Submit(Complaint complaint)
-        {
-            if (complaint == null || string.IsNullOrEmpty(complaint.StudentName))
-            {
-                TempData["Error"] = "Invalid complaint";
-                return RedirectToAction("Queue");
-            }
-
-            _service.SubmitComplaint(complaint);
-
-            // Directly show updated queue instead of redirect
-            var complaints = _service.GetAllComplaints();
-            return View("~/Views/Complaints/Queue.cshtml", complaints);
-        }
-        [HttpGet]
-        public IActionResult Process()
-        {
-            return View("~/Views/Complaints/Processed.cshtml");
-        }
-        
-        [HttpPost]
-        public IActionResult ProcessNext()
-        {
-            var complaint = _service.ProcessComplaint();
-
-            if (complaint == null)
-            {
-                TempData["Message"] = "No complaints in queue";
-                return RedirectToAction("Queue");
-            }
-
-            return View("~/Views/Complaints/Processed.cshtml", complaint);
-        }
-    }
-}
-*/
-using HostelManagementSystem.Models;
-using HostelManagementSystem.Services;
-using Microsoft.AspNetCore.Mvc;
-
-namespace HostelManagementSystem.Controllers
-{
-    public class ComplaintsController : Controller
-    {
-        private readonly IComplaintService _service;
-
-        public ComplaintsController(IComplaintService service)
-        {
-            _service = service;
-        }
-
-        // ------------------ NEW INDEX ACTION ------------------
+        // ADMIN: View all complaints
         public IActionResult Index()
         {
-            return RedirectToAction("Queue");
-        }
-
-        // ------------------ MAIN QUEUE PAGE ------------------
-        [Route("Complaints/Queue")]
-        [Route("Complaints/Index")]
-        public IActionResult Queue()
-        {
             var complaints = _service.GetAllComplaints();
-            return View("~/Views/Complaints/Queue.cshtml", complaints);
+            return View("~/Views/Complaints/Index.cshtml", complaints);
         }
 
+        // ADMIN: Update status to "Received"
+        [HttpPost]
+        public IActionResult MarkReceived(int id)
+        {
+            _service.UpdateComplaintStatus(id, "Received");
+            return RedirectToAction("Index");
+        }
+
+        // ADMIN: Update status to "In Progress"
+        [HttpPost]
+        public IActionResult MarkInProgress(int id)
+        {
+            _service.UpdateComplaintStatus(id, "In Progress");
+            return RedirectToAction("Index");
+        }
+
+        // ADMIN: Update status to "Done"
+        [HttpPost]
+        public IActionResult MarkDone(int id)
+        {
+            _service.UpdateComplaintStatus(id, "Done");
+            return RedirectToAction("Index");
+        }
+
+        // ADMIN: View complaint details
+        public IActionResult Details(int id)
+        {
+            var complaint = _service.GetComplaintById(id);
+            if (complaint == null)
+            {
+                return NotFound();
+            }
+            return View("~/Views/Complaints/Details.cshtml", complaint);
+        }
+
+        // STUDENT: View submit complaint form (GET)
         [HttpGet]
         public IActionResult Submit()
         {
             return View("~/Views/Complaints/Submit.cshtml");
         }
 
+        // STUDENT: Submit complaint (POST)
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Submit(Complaint complaint)
         {
-            if (complaint == null || string.IsNullOrEmpty(complaint.StudentName))
-            {
-                TempData["Error"] = "Invalid complaint";
-                return RedirectToAction("Queue");
-            }
+            complaint.Time = DateTime.Now;
+            complaint.Status = "Pending";
 
-            _service.SubmitComplaint(complaint);
+            _service.AddComplaint(complaint);
 
-            // Directly show updated queue instead of redirect
-            var complaints = _service.GetAllComplaints();
-            return View("~/Views/Complaints/Queue.cshtml", complaints);
-        }
-
-        [HttpGet]
-        public IActionResult Process()
-        {
-            return View("~/Views/Complaints/Processed.cshtml");
-        }
-
-        [HttpPost]
-        public IActionResult ProcessNext()
-        {
-            var complaint = _service.ProcessComplaint();
-
-            if (complaint == null)
-            {
-                TempData["Message"] = "No complaints in queue";
-                return RedirectToAction("Queue");
-            }
-
-            return View("~/Views/Complaints/Processed.cshtml", complaint);
+            TempData["Success"] = "Complaint submitted successfully!";
+            return RedirectToAction("Index");
         }
     }
 }
