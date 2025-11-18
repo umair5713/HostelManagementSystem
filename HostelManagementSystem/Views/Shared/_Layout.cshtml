@@ -3,192 +3,148 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - HostelManagementSystem</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>@ViewData["Title"] - CAMPUS NEST </title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Your Custom CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/HostelManagementSystem.styles.css" asp-append-version="true" />
-
-    <style>
-        body {
-            background: #f5f5f5;
-            overflow-x: hidden;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 260px;
-            height: 100vh;
-            background: #1b1b1b;
-            position: fixed;
-            top: 0;
-            left: 0;
-            padding-top: 20px;
-            color: white;
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-
-            .sidebar h2 {
-                text-align: center;
-                font-weight: bold;
-                margin-bottom: 2rem;
-            }
-
-            .sidebar a, .sidebar button {
-                display: block;
-                padding: 12px 20px;
-                color: #ddd;
-                text-decoration: none;
-                margin-bottom: 5px;
-                transition: 0.2s;
-                width: 100%;
-                text-align: left;
-                border: none;
-                background: none;
-            }
-
-                .sidebar a:hover, .sidebar .active, .sidebar button:hover {
-                    background: #333;
-                    color: #fff;
-                }
-
-            .sidebar::-webkit-scrollbar {
-                width: 8px;
-            }
-
-            .sidebar::-webkit-scrollbar-thumb {
-                background: #555;
-                border-radius: 4px;
-            }
-
-                .sidebar::-webkit-scrollbar-thumb:hover {
-                    background: #333;
-                }
-
-        /* Content */
-        .content {
-            margin-left: 260px;
-            padding: 20px;
-        }
-
-        /* Navbar */
-        .top-navbar {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
 </head>
 <body>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h2>HOSTEL ADMIN</h2>
-
-        <!-- Dashboard -->
-        <a asp-controller="Admin" asp-action="Dashboard">📊 Dashboard</a>
-
-        <!-- Student Management -->
-        <div>
-            <button data-bs-toggle="collapse" data-bs-target="#studentMenu">👨‍🎓 Student Management</button>
-            <div class="collapse" id="studentMenu">
-                <a asp-controller="Student" asp-action="Index" class="ps-4 py-1">All Students</a>
-                <a asp-controller="Student" asp-action="Register" class="ps-4 py-1">Add Student</a>
-                <a asp-controller="Student" asp-action="Assignments" class="ps-4 py-1">Room Assignment</a>
-            </div>
+    <div class="admin-container">
+        <!-- Animated Background -->
+        <div class="animated-bg">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
         </div>
 
-        <!-- Room Allocation -->
-        <div>
-            <button data-bs-toggle="collapse" data-bs-target="#roomMenu">🛏 Room Allocation</button>
-            <div class="collapse" id="roomMenu">
-                <a asp-controller="RoomAllocation" asp-action="Index" class="ps-4 py-1">All Rooms</a>
-                <a asp-controller="RoomAllocation" asp-action="AddRoom" class="ps-4 py-1">Add Room</a>
-                <a asp-controller="RoomAllocation" asp-action="Availability" class="ps-4 py-1">Room Availability</a>
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <i class="fas fa-hotel logo-icon"></i>
+                    <div>
+                        <h2>CAMPUS NEST</h2>
+                        <span class="logo-subtitle">Admin Panel</span>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- Mess Management -->
-        <div>
-            <button data-bs-toggle="collapse" data-bs-target="#messMenu">🍽 Mess Management</button>
-            <div class="collapse" id="messMenu">
+            <nav class="sidebar-nav">
+                <a href="/Admin/Dashboard" class="nav-item active">
+                    <i class="fas fa-chart-line nav-icon"></i>
+                    <span>Dashboard</span>
+                    <div class="nav-glow"></div>
+                </a>
+                <a href="/Student/Index" class="nav-item">
+                    <i class="fas fa-user-graduate nav-icon"></i>
+                    <span>Students</span>
+                    <div class="nav-glow"></div>
+                </a>
+                <a href="/RoomAllocation/Index" class="nav-item">
+                    <i class="fas fa-bed nav-icon"></i>
+                    <span>Rooms</span>
+                    <div class="nav-glow"></div>
+                </a>
+                <a href="/Menu/Index" class="nav-item">
+                    <i class="fas fa-utensils nav-icon"></i>
+                    <span>Mess</span>
+                    <div class="nav-glow"></div>
+                </a>
+                <a href="/Complaints/Index" class="nav-item">
+                    <i class="fas fa-exclamation-circle nav-icon"></i>
+                    <span>Complaints</span>
+                    <div class="nav-glow"></div>
+                </a>
+                <a href="/Billing/Index" class="nav-item">
+                    <i class="fas fa-wallet nav-icon"></i>
+                    <span>Payments</span>
+                    <div class="nav-glow"></div>
+                </a>
+                <a href="/Attendance/Index" class="nav-item">
+                    <i class="fas fa-clipboard-check nav-icon"></i>
+                    <span>Attendance</span>
+                    <div class="nav-glow"></div>
+                </a>
 
-                <!-- Menu Management -->
-                <a asp-controller="Menu" asp-action="Index" class="ps-4 py-1">Daily Menu</a>
-                <a asp-controller="Menu" asp-action="AddMenu" class="ps-4 py-1">Create Menu</a>
+                <div class="nav-separator"></div>
 
-                <!-- Attendance -->
-                <a asp-controller="Attendance" asp-action="Index" class="ps-4 py-1">Attendance Tracker</a>
+                <a href="/Admin/Settings" class="nav-item">
+                    <i class="fas fa-cog nav-icon"></i>
+                    <span>Settings</span>
+                    <div class="nav-glow"></div>
+                </a>
+                <a href="/Auth/Logout" class="nav-item">
+                    <i class="fas fa-sign-out-alt nav-icon"></i>
+                    <span>Logout</span>
+                    <div class="nav-glow"></div>
+                </a>
+            </nav>
+        </aside>
 
-                <!-- Billing -->
-                <a asp-controller="Billing" asp-action="Index" class="ps-4 py-1">Billing Records</a>
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Header Bar -->
+            <header class="top-header">
+                <div class="header-left">
+                    <h1 class="page-title">
+                        <span class="title-gradient">@ViewData["Title"]</span>
+                    </h1>
+                </div>
+                <div class="header-right">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search...">
+                    </div>
+                    <div class="notification-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=Admin&background=667eea&color=fff" alt="Admin">
+                        <div class="user-details">
+                            <span class="user-name">Admin</span>
+                            <span class="user-role">Administrator</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Wrapper -->
+            <div class="content-wrapper">
+                @RenderBody()
             </div>
-        </div>
-
-        <!-- Complaints -->
-        <div>
-            <button data-bs-toggle="collapse" data-bs-target="#complaintMenu">📝 Complaint Management</button>
-            <div class="collapse" id="complaintMenu">
-                <a asp-controller="Complaints" asp-action="Index" class="ps-4 py-1">All Complaints</a>
-                <a asp-controller="Complaints" asp-action="Pending" class="ps-4 py-1">Pending Complaints</a>
-                <a asp-controller="Complaints" asp-action="Resolved" class="ps-4 py-1">Resolved Complaints</a>
-            </div>
-        </div>
-
-        <!-- Payments -->
-        <div>
-            <button data-bs-toggle="collapse" data-bs-target="#paymentMenu">💳 Payments & Fees</button>
-            <div class="collapse" id="paymentMenu">
-                <a asp-controller="Payment" asp-action="Index" class="ps-4 py-1">All Payments</a>
-                <a asp-controller="Payment" asp-action="Pending" class="ps-4 py-1">Pending Dues</a>
-                <a asp-controller="Payment" asp-action="History" class="ps-4 py-1">Payment History</a>
-            </div>
-        </div>
-
-        <!-- Staff -->
-        <div>
-            <button data-bs-toggle="collapse" data-bs-target="#staffMenu">👷 Staff Management</button>
-            <div class="collapse" id="staffMenu">
-                <a asp-controller="Staff" asp-action="Index" class="ps-4 py-1">All Staff</a>
-                <a asp-controller="Staff" asp-action="Create" class="ps-4 py-1">Add Staff</a>
-            </div>
-        </div>
-
-        <!-- Settings -->
-        <div>
-            <button data-bs-toggle="collapse" data-bs-target="#settingsMenu">⚙ Settings</button>
-            <div class="collapse" id="settingsMenu">
-                <a asp-controller="Settings" asp-action="General" class="ps-4 py-1">General Settings</a>
-                <a asp-controller="Settings" asp-action="Security" class="ps-4 py-1">Security</a>
-            </div>
-        </div>
-
-        <!-- Logout -->
-        <a asp-controller="Auth" asp-action="Logout" class="btn btn-danger mt-3 w-100">🚪 Logout</a>
-    </div>
-
-
-    <!-- Main content -->
-    <div class="content">
-        <div class="top-navbar d-flex justify-content-between align-items-center">
-            <h4 class="m-0">@ViewData["Title"]</h4>
-            <div>
-                <span class="me-2">Admin</span>
-                <img src="/images/admin.png" width="40" class="rounded-circle" />
-            </div>
-        </div>
-
-        <main role="main" class="pb-3">
-            @RenderBody()
         </main>
     </div>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Your Custom JS -->
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        // Add active class to current nav item
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+            const navItems = document.querySelectorAll('.nav-item');
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === currentPath) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-
