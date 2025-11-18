@@ -21,9 +21,9 @@ namespace HostelManagementSystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult Mark(string studentName)
+        public IActionResult Mark(string studentId, string studentName)
         {
-            _service.MarkAttendance(studentName);
+            _service.MarkAttendance(studentId,studentName);
             return RedirectToAction("Index");
         }
 
@@ -31,6 +31,19 @@ namespace HostelManagementSystem.Controllers
         {
             _service.UndoAttendance();
             return RedirectToAction("Index");
+        }
+
+        public IActionResult StudentView(string studentId)
+        {
+            if (string.IsNullOrEmpty(studentId))
+            {
+                ViewBag.Message = "Please enter your Student ID";
+                return View(new List<AttendanceRecord>());
+            }
+
+            var records = _service.GetAttendanceByStudentId(studentId);
+            ViewBag.StudentId = studentId;
+            return View(records);
         }
     }
 }
