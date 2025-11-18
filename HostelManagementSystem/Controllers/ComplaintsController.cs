@@ -19,6 +19,11 @@ namespace HostelManagementSystem.Controllers
             var complaints = _service.GetAllComplaints();
             return View("~/Views/Complaints/Index.cshtml", complaints);
         }
+        public IActionResult Admin()
+        {
+            var complaints = _service.GetAllComplaints();
+            return View("~/Views/Complaints/Admin.cshtml", complaints);
+        }
 
         // ADMIN: Update status to "Received"
         [HttpPost]
