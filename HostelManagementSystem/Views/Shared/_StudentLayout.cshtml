@@ -55,9 +55,16 @@
                 </a>
 
                 <!-- Attendance / Meal History -->
-                <a href="/Attendance/Index" class="nav-item">
+                @* <a href="/Attendance/Index" class="nav-item"> *@
+                   @* <a asp-controller="Attendance" asp-action="Index" class="nav-link">
                     <i class="fas fa-clipboard-check nav-icon"></i>
                     <span>View Attendance</span>
+                    <div class="nav-glow"></div> *@
+                </a>
+
+                <a asp-controller="Attendance" asp-action="StudentView" class="nav-item">
+                    <i class="fas fa-user-check nav-icon"></i>
+                    <span>View My Attendance</span>
                     <div class="nav-glow"></div>
                 </a>
 
