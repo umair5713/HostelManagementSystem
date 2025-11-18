@@ -1,0 +1,32 @@
+﻿@model List<HostelManagementSystem.Models.StudentMeal>
+@{
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+<h2 class="mt-3">My Accepted Meals</h2>
+
+@if (!Model.Any())
+{
+    <p>No meals accepted yet.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Date</th>
+                <th>Meal Type</th>
+                <th>Time Accepted</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var meal in Model)
+            {
+                <tr>
+                    <td>@meal.Date</td>
+                    <td>@meal.MealType</td>
+                    <td>@meal.Time.ToString("g")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

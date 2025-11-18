@@ -31,7 +31,7 @@ namespace HostelManagementSystem.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Index", "Student");
+                    return RedirectToAction("Dashboard", "Student");
 
                 }
             }
