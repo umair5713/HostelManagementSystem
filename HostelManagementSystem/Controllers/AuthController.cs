@@ -50,5 +50,12 @@ namespace HostelManagementSystem.Controllers
             _service.RegisterUser(user);
             return RedirectToAction("Login");
         }
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            // Clear session data
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login");
+        }
     }
 }

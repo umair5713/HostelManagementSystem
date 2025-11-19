@@ -28,8 +28,6 @@ builder.Services.AddSingleton<IMenuService, MenuService>();
 builder.Services.AddSingleton<IStudentMealRepository, StudentMealRepository>();
 builder.Services.AddSingleton<IStudentMealService, StudentMealService>();
 
-builder.Services.AddSingleton<IBillingRepository, BillingRepository>();
-builder.Services.AddSingleton<IBillingService, BillingService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
