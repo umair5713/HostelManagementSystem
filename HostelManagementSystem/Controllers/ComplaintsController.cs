@@ -19,6 +19,7 @@ namespace HostelManagementSystem.Controllers
             var complaints = _service.GetAllComplaints();
             return View("~/Views/Complaints/Index.cshtml", complaints);
         }
+
         public IActionResult Admin()
         {
             var complaints = _service.GetAllComplaints();
@@ -49,18 +50,25 @@ namespace HostelManagementSystem.Controllers
             return RedirectToAction("Index");
         }
 
+        // ADMIN: Delete complaint
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            _service.DeleteComplaint(id);
+            return RedirectToAction("Index");
+        }
+
         // ADMIN: View complaint details
         public IActionResult Details(int id)
         {
             var complaint = _service.GetComplaintById(id);
             if (complaint == null)
-            {
                 return NotFound();
-            }
+
             return View("~/Views/Complaints/Details.cshtml", complaint);
         }
 
-        // STUDENT: View submit complaint form (GET)
+        // STUDENT: View submit form (GET)
         [HttpGet]
         public IActionResult Submit()
         {
@@ -72,11 +80,7 @@ namespace HostelManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Submit(Complaint complaint)
         {
-            complaint.Time = DateTime.Now;
-            complaint.Status = "Pending";
-
-            _service.AddComplaint(complaint);
-
+            _service.AddComplaint(complaint); // Time & Status set inside service
             TempData["Success"] = "Complaint submitted successfully!";
             return RedirectToAction("Index");
         }

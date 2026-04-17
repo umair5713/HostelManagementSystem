@@ -100,14 +100,13 @@ namespace HostelManagementSystem.Controllers
             return View("~/Views/Student/SubmitComplaint.cshtml");
         }
 
-        // STUDENT: Submit complaint action
+        //STUDENT: Submit complaint action
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult SubmitComplaint(Complaint complaint)
         {
-            // TODO: Get student name from session/auth
-            complaint.StudentName = "Ahmad Ali"; // Replace with actual logged-in student
-
-            _complaintService.SubmitComplaint(complaint);
+            complaint.StudentName = User.Identity?.Name ?? string.Empty;
+            _complaintService.AddComplaint(complaint);
             TempData["Success"] = "Complaint submitted successfully!";
             return RedirectToAction("MyComplaints");
         }
