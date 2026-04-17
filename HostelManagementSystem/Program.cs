@@ -19,8 +19,8 @@ builder.Services.AddSingleton<IAttendanceService, AttendanceService>();
 builder.Services.AddSingleton<IStudentRepository, StudentRepository>();
 builder.Services.AddSingleton<IStudentService, StudentService>();
 
-builder.Services.AddSingleton<IComplaintRepository, ComplaintRepository>();
-builder.Services.AddSingleton<IComplaintService, ComplaintService>();
+builder.Services.AddScoped<IComplaintRepository, ComplaintRepository>();
+builder.Services.AddScoped<IComplaintService, ComplaintService>();
 
 builder.Services.AddSingleton<IMenuRepository, MenuRepository>();
 builder.Services.AddSingleton<IMenuService, MenuService>();
