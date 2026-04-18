@@ -1,12 +1,13 @@
 ﻿@model Complaint
 @{
     ViewData["Title"] = "Complaint Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";  // ✅ Admin layout
 }
 
 <div class="content-card">
     <div class="card-header-custom">
         <h4><i class="fas fa-file-alt"></i> Complaint Details</h4>
-        <a asp-action="Index" class="btn-secondary">Back to List</a>
+        <a asp-action="Admin" class="btn-secondary">Back to List</a>
     </div>
 
     <div class="complaint-details">
@@ -51,87 +52,48 @@
         </div>
     </div>
 
+    @* ✅ Only show next valid status — no going backwards *@
     <div class="action-section" style="margin-top: 30px;">
         <h5>Update Status:</h5>
         <div style="display: flex; gap: 10px; margin-top: 15px;">
-            @if (Model.Status != "Received")
+            @if (Model.Status == "Pending")
             {
                 <form asp-action="MarkReceived" method="post">
                     <input type="hidden" name="id" value="@Model.ComplaintID" />
                     <button type="submit" class="btn-edit">Mark as Received</button>
                 </form>
             }
-            @if (Model.Status != "In Progress")
+            else if (Model.Status == "Received")
             {
                 <form asp-action="MarkInProgress" method="post">
                     <input type="hidden" name="id" value="@Model.ComplaintID" />
                     <button type="submit" class="btn-view">Mark as In Progress</button>
                 </form>
             }
-            @if (Model.Status != "Done")
+            else if (Model.Status == "In Progress")
             {
                 <form asp-action="MarkDone" method="post">
                     <input type="hidden" name="id" value="@Model.ComplaintID" />
                     <button type="submit" class="btn-delete">Mark as Done</button>
                 </form>
             }
+            else if (Model.Status == "Done")
+            {
+                <span class="text-success fw-bold">✔ This complaint has been resolved.</span>
+            }
         </div>
     </div>
 </div>
 
 <style>
-    .complaint-details {
-        background: #f8fafc;
-        padding: 25px;
-        border-radius: 12px;
-        border: 1px solid rgba(99, 102, 241, 0.1);
-    }
-
-    .detail-row {
-        display: flex;
-        justify-content: space-between;
-        padding: 15px 0;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    }
-
-        .detail-row:last-child {
-            border-bottom: none;
-        }
-
-        .detail-row strong {
-            color: #4a5568;
-            font-weight: 600;
-        }
-
-    .action-section {
-        padding-top: 20px;
-        border-top: 2px solid rgba(99, 102, 241, 0.1);
-    }
-
-    .badge {
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-    }
-
-    .bg-warning {
-        background: #f59e0b;
-        color: white;
-    }
-
-    .bg-info {
-        background: #3b82f6;
-        color: white;
-    }
-
-    .bg-primary {
-        background: #8b5cf6;
-        color: white;
-    }
-
-    .bg-success {
-        background: #10b981;
-        color: white;
-    }
+    .complaint-details { background: #f8fafc; padding: 25px; border-radius: 12px; border: 1px solid rgba(99, 102, 241, 0.1); }
+    .detail-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-row strong { color: #4a5568; font-weight: 600; }
+    .action-section { padding-top: 20px; border-top: 2px solid rgba(99, 102, 241, 0.1); }
+    .badge { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .bg-warning { background: #f59e0b; color: white; }
+    .bg-info { background: #3b82f6; color: white; }
+    .bg-primary { background: #8b5cf6; color: white; }
+    .bg-success { background: #10b981; color: white; }
 </style>

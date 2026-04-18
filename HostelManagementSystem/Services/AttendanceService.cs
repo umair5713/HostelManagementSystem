@@ -3,7 +3,7 @@ using HostelManagementSystem.Repositories;
 
 namespace HostelManagementSystem.Services
 {
-    public class AttendanceService:IAttendanceService
+    public class AttendanceService : IAttendanceService
     {
         private readonly IAttendanceRepository _repo;
 
@@ -12,12 +12,7 @@ namespace HostelManagementSystem.Services
             _repo = repo;
         }
 
-        public List<AttendanceRecord> GetAll()
-        {
-            return _repo.GetAttendanceList();
-        }
-
-        public void MarkAttendance(string studentId,string studentName)
+        public void MarkAttendance(int studentId, string studentName)
         {
             AttendanceRecord record = new AttendanceRecord
             {
@@ -26,19 +21,32 @@ namespace HostelManagementSystem.Services
                 Time = DateTime.Now
             };
 
-            _repo.Push(record);
+            _repo.AddAttendance(record);
         }
 
-        public AttendanceRecord UndoAttendance()
+        public List<AttendanceRecord> GetAll()
         {
-            return _repo.Pop();
+            return _repo.GetAll();
         }
 
-        public List<AttendanceRecord> GetAttendanceByStudentId(string studentId)
+        public List<AttendanceRecord> GetByStudent(int studentId)
         {
-            //return attendanceRecords.Where(r => r.StudentId == studentId).ToList();
-            var allRecords = _repo.GetAttendanceList();
-            return allRecords.Where(r => r.StudentID== studentId).ToList();
+            return _repo.GetByStudent(studentId);
+        }
+
+        public AttendanceRecord? GetLatest(int studentId)
+        {
+            return _repo.GetLatest(studentId);
+        }
+
+        public bool HasAttendance(int studentId)
+        {
+            return _repo.HasAttendance(studentId);
+        }
+
+        public int GetCount(int studentId)
+        {
+            return _repo.Count(studentId);
         }
     }
 }

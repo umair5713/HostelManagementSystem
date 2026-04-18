@@ -4,10 +4,11 @@ namespace HostelManagementSystem.Services
 {
     public interface IAttendanceService
     {
+        void MarkAttendance(int studentId, string studentName);
         List<AttendanceRecord> GetAll();
-        void MarkAttendance(string studentId, string studentName);
-        AttendanceRecord UndoAttendance();
-
-        List<AttendanceRecord> GetAttendanceByStudentId(string studentId);
+        List<AttendanceRecord> GetByStudent(int studentId);
+        AttendanceRecord? GetLatest(int studentId);
+        bool HasAttendance(int studentId);
+        int GetCount(int studentId);
     }
 }

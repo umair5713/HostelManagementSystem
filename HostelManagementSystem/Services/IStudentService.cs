@@ -4,8 +4,12 @@ namespace HostelManagementSystem.Services
 {
     public interface IStudentService
     {
-        List<Student> GetAllStudents();
         void RegisterStudent(Student student);
-        List<Student> SortByID();
+        List<Student> GetAllStudents();
+        Student? GetById(int studentId);
+        void UpdateStudent(Student student);
+        void DeleteStudent(int studentId);
+        List<Student> SortById();
     }
+
 }

@@ -22,9 +22,20 @@ namespace HostelManagementSystem.Services
             _repo.AddStudent(student);
         }
 
-        public List<Student> SortByID()
+        public Student? GetById(int studentId)
         {
-            _repo.SortByID();
+           return _repo.GetById(studentId);
+        }
+        public void UpdateStudent(Student student)
+        {
+            _repo.UpdateStudent(student);
+        }
+        public void DeleteStudent(int studentId)
+        {
+             _repo.DeleteStudent(studentId);
+        }
+        public List<Student> SortById()
+        {
             return _repo.GetStudents();
         }
     }

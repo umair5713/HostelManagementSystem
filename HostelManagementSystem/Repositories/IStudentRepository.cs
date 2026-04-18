@@ -6,9 +6,9 @@ namespace HostelManagementSystem.Repositories
     {
         void AddStudent(Student student);
         List<Student> GetStudents();
-        void SortByID();
-        StudentNode MergeSort(StudentNode h);
-        StudentNode Merge(StudentNode left, StudentNode right);
-        StudentNode GetMiddle(StudentNode h);
+        Student? GetById(int studentId);
+        void UpdateStudent(Student student);
+        void DeleteStudent(int studentId);
+        List<Student> GetSortedByID();
     }
 }

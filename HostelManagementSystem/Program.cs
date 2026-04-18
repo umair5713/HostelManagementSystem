@@ -13,11 +13,11 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddSingleton<IRoomAllocationRepository, RoomAllocationRepository>();
 builder.Services.AddSingleton<IRoomAllocationService, RoomAllocationService>();
 
-builder.Services.AddSingleton<IAttendanceRepository, AttendanceRepository>();
-builder.Services.AddSingleton<IAttendanceService, AttendanceService>();
+builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
+builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 
-builder.Services.AddSingleton<IStudentRepository, StudentRepository>();
-builder.Services.AddSingleton<IStudentService, StudentService>();
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IStudentService, StudentService>();
 
 builder.Services.AddScoped<IComplaintRepository, ComplaintRepository>();
 builder.Services.AddScoped<IComplaintService, ComplaintService>();

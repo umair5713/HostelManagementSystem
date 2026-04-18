@@ -1,121 +1,73 @@
-﻿using HostelManagementSystem.Models;
+﻿using HostelManagementSystem.Data;
+using HostelManagementSystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HostelManagementSystem.Repositories
 {
     public class StudentRepository : IStudentRepository
     {
-        private static StudentNode head;
+        private readonly AppDbContext _context;
+        public StudentRepository(AppDbContext context)
+        {
+            _context = context;
+        }
 
         public void AddStudent(Student student)
         {
-            StudentNode newnode = new StudentNode
-            {
-                Data = student,
-                Next = null
-            };
-
-            if (head == null)
-            {
-                head = newnode;
-                return;
-            }
-
-            StudentNode current = head;
-            while (current.Next != null)
-                current = current.Next;
-
-            current.Next = newnode;
+            _context.Database.ExecuteSqlRaw(
+                @"INSERT INTO tbl_students (StudentName, RoomNo, FeeStatus)
+              VALUES ({0}, {1}, {2})",
+                student.StudentName,
+                student.RoomNo,
+                student.FeeStatus
+            );
         }
 
+        // GET ALL
         public List<Student> GetStudents()
         {
-            List<Student> list = new List<Student>();
-            StudentNode temp = head;
-
-            while (temp != null)
-            {
-                list.Add(temp.Data);
-                temp = temp.Next;
-            }
-
-            return list;
+            return _context.Students
+                      .FromSqlRaw("SELECT StudentID, StudentName, RoomNo, FeeStatus FROM tbl_students")
+                      .ToList();
         }
 
-        public void SortByID()
+        // GET BY ID
+        public Student? GetById(int studentId)
         {
-            head = MergeSort(head);
+            return _context.Students
+                      .FromSqlRaw("SELECT StudentID, StudentName, RoomNo, FeeStatus FROM tbl_students WHERE StudentID = {0}", studentId)
+                      .FirstOrDefault();
         }
 
-        public StudentNode MergeSort(StudentNode h)
+        // UPDATE
+        public void UpdateStudent(Student student)
         {
-            if (h == null || h.Next == null)
-                return h;
-
-            StudentNode mid = GetMiddle(h);
-
-            StudentNode left = h;
-            StudentNode right = mid.Next;
-            mid.Next = null;
-
-            left = MergeSort(left);
-            right = MergeSort(right);
-
-            return Merge(left, right);
+            _context.Database.ExecuteSqlRaw(
+                @"UPDATE tbl_students 
+              SET StudentName = {0}, RoomNo = {1}, FeeStatus = {2}
+              WHERE StudentID = {3}",
+                student.StudentName,
+                student.RoomNo,
+                student.FeeStatus,
+                student.StudentID
+            );
         }
 
-        public StudentNode Merge(StudentNode left, StudentNode right)
+        // DELETE
+        public void DeleteStudent(int studentId)
         {
-            if (left == null) return right;
-            if (right == null) return left;
-
-            StudentNode dummy = new StudentNode();
-            StudentNode temp = dummy;
-
-            while (left != null && right != null)
-            {
-                if (left.Data.StudentID <= right.Data.StudentID)
-                {
-                    temp.Next = left;
-                    temp = left;
-                    left = left.Next;
-                }
-                else
-                {
-                    temp.Next = right;
-                    temp = right;
-                    right = right.Next;
-                }
-            }
-
-            while (left != null)
-            {
-                temp.Next = left;
-                temp = left;
-                left = left.Next;
-            }
-
-            while (right != null)
-            {
-                temp.Next = right;
-                temp = right;
-                right = right.Next;
-            }
-
-            return dummy.Next;
+            _context.Database.ExecuteSqlRaw(
+                "DELETE FROM tbl_students WHERE StudentID = {0}",
+                studentId
+            );
         }
 
-        public StudentNode GetMiddle(StudentNode h)
+        // GET SORTED BY ID — replaces MergeSort
+        public List<Student> GetSortedByID()
         {
-            StudentNode slow = h;
-            StudentNode fast = h.Next;
-
-            while (fast != null && fast.Next != null)
-            {
-                slow = slow.Next;
-                fast = fast.Next.Next;
-            }
-
-            return slow;
+            return _context.Students
+                      .FromSqlRaw("SELECT StudentID, StudentName, RoomNo, FeeStatus FROM tbl_students ORDER BY StudentID ASC")
+                      .ToList();
         }
 
     }
