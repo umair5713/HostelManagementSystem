@@ -1,82 +1,74 @@
-﻿using HostelManagementSystem.Models;
+﻿using HostelManagementSystem.Data;
+using HostelManagementSystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HostelManagementSystem.Repositories
 {
     public class AttendanceRepository : IAttendanceRepository
     {
-        private AttendanceStackNode top;
-
-        // PUSH
-        public void Push(AttendanceRecord record)
+        private readonly AppDbContext _context;
+        public AttendanceRepository(AppDbContext context)
         {
-            AttendanceStackNode newnode = new AttendanceStackNode();
-            newnode.Data = record;
-            newnode.next = top;
-            top = newnode;
+            _context = context;
         }
 
-        // POP
-        public AttendanceRecord Pop()
+        
+        public void AddAttendance(AttendanceRecord record)
         {
-            if (top == null)
-                return null;
+            var student = _context.Students
+                .FromSqlRaw("SELECT StudentID, StudentName, RoomNo, FeeStatus FROM tbl_students WHERE StudentID = {0}", record.StudentID)
+                .FirstOrDefault();
+            if (student == null)
+                throw new Exception($"Student with ID {record.StudentID} does not exist in tbl_students.");
 
-            AttendanceRecord removed = top.Data;
-            top = top.next;
-            return removed;
+            _context.Database.ExecuteSqlRaw(
+                @"INSERT INTO tbl_attendance (StudentID, StudentName, Time)
+              VALUES ({0}, {1}, {2})",
+                record.StudentID,
+                record.StudentName,
+                DateTime.Now
+            );
         }
 
-        // TRAVERSE : GET LIST
-        public List<AttendanceRecord> GetAttendanceList()
+        
+        public List<AttendanceRecord> GetAll()
         {
-            List<AttendanceRecord> list = new List<AttendanceRecord>();
-            AttendanceStackNode current = top;
-
-            while (current != null)
-            {
-                list.Add(current.Data);
-                current = current.next;
-            }
-
-            return list;
+            return _context.AttendanceRecords
+                      .FromSqlRaw("SELECT AttendanceID, StudentID, StudentName, Time FROM tbl_attendance ORDER BY Time DESC")
+                      .ToList();
         }
 
-        // PEEK — Show last marked student
-        public AttendanceRecord Peek()
+        
+        public List<AttendanceRecord> GetByStudent(int studentId)
         {
-            return top != null ? top.Data : null;
+            return _context.AttendanceRecords
+                      .FromSqlRaw("SELECT AttendanceID, StudentID, StudentName, Time FROM tbl_attendance WHERE StudentID = {0} ORDER BY Time DESC", studentId)
+                      .ToList();
         }
 
-        // EMPTY CHECK
-        public bool IsEmpty()
+        
+        public AttendanceRecord? GetLatest(int studentId)
         {
-            return top == null;
+            return _context.AttendanceRecords
+                      .FromSqlRaw("SELECT TOP 1 AttendanceID, StudentID, StudentName, Time FROM tbl_attendance WHERE StudentID = {0} ORDER BY Time DESC", studentId)
+                      .FirstOrDefault();
         }
 
-        // COUNT
-        public int Count()
+        
+        public bool HasAttendance(int studentId)
         {
-            int counter = 0;
-            AttendanceStackNode current = top;
-            while (current != null)
-            {
-                counter++;
-                current = current.next;
-            }
-            return counter;
+            var result = _context.AttendanceRecords
+                            .FromSqlRaw("SELECT TOP 1 AttendanceID, StudentID, StudentName, Time FROM tbl_attendance WHERE StudentID = {0}", studentId)
+                            .FirstOrDefault();
+            return result != null;
         }
 
-        // SEARCH — Check if student attended (linear search)
-        public bool Search(string name)
+        
+        public int Count(int studentId)
         {
-            AttendanceStackNode temp = top;
-            while (temp != null)
-            {
-                if (temp.Data.StudentName.ToLower() == name.ToLower())
-                    return true;
-                temp = temp.next;
-            }
-            return false;
+            return _context.AttendanceRecords
+                      .FromSqlRaw("SELECT AttendanceID, StudentID, StudentName, Time FROM tbl_attendance WHERE StudentID = {0}", studentId)
+                      .Count();
         }
     }
 }

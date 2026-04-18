@@ -1,19 +1,28 @@
 ﻿@model List<Complaint>
 @{
-    ViewData["Title"] = "Complaints Management";
+    ViewData["Title"] = "My Complaints";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";  // ✅ Student layout
 }
-@{
-    Layout = "~/Views/Shared/_StudentLayout.cshtml";
-}
+
 <div class="content-card">
     <div class="card-header-custom">
-        <h4><i class="fas fa-exclamation-circle"></i> Complaints Management</h4>
+        <h4><i class="fas fa-exclamation-circle"></i> My Complaints</h4>
+        <a asp-action="Submit" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Submit New Complaint
+        </a>
     </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i> @TempData["Success"]
+        </div>
+    }
 
     @if (Model == null || Model.Count == 0)
     {
         <div class="alert alert-info">
-            <i class="fas fa-info-circle"></i> No complaints submitted yet.
+            <i class="fas fa-info-circle"></i> You have not submitted any complaints yet.
         </div>
     }
     else
@@ -22,12 +31,10 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Student Name</th>
                     <th>Title</th>
                     <th>Description</th>
                     <th>Time</th>
                     <th>Status</th>
-                    
                 </tr>
             </thead>
             <tbody>
@@ -35,7 +42,6 @@
                 {
                     <tr>
                         <td>@complaint.ComplaintID</td>
-                        <td>@complaint.StudentName</td>
                         <td>@complaint.Title</td>
                         <td>@complaint.Description</td>
                         <td>@complaint.Time.ToString("g")</td>
@@ -57,7 +63,6 @@
                                 <span class="badge bg-success">Done</span>
                             }
                         </td>
-                        
                     </tr>
                 }
             </tbody>
@@ -66,25 +71,21 @@
 </div>
 
 <style>
-    .badge {
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-    }
+    .badge { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
     .bg-warning { background: #f59e0b; color: white; }
     .bg-info { background: #3b82f6; color: white; }
     .bg-primary { background: #8b5cf6; color: white; }
     .bg-success { background: #10b981; color: white; }
-
     .alert-info {
         background: rgba(59, 130, 246, 0.1);
         border: 1px solid rgba(59, 130, 246, 0.3);
-        color: #3b82f6;
-        padding: 15px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
+        color: #3b82f6; padding: 15px; border-radius: 10px;
+        display: flex; align-items: center; gap: 10px;
+    }
+    .alert-success {
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        color: #10b981; padding: 15px; border-radius: 10px;
+        display: flex; align-items: center; gap: 10px;
     }
 </style>

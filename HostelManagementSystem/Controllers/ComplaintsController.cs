@@ -13,7 +13,7 @@ namespace HostelManagementSystem.Controllers
             _service = service;
         }
 
-        // ADMIN: View all complaints
+        
         public IActionResult Index()
         {
             var complaints = _service.GetAllComplaints();
@@ -31,7 +31,7 @@ namespace HostelManagementSystem.Controllers
         public IActionResult MarkReceived(int id)
         {
             _service.UpdateComplaintStatus(id, "Received");
-            return RedirectToAction("Index");
+            return RedirectToAction("Admin");
         }
 
         // ADMIN: Update status to "In Progress"
@@ -39,7 +39,7 @@ namespace HostelManagementSystem.Controllers
         public IActionResult MarkInProgress(int id)
         {
             _service.UpdateComplaintStatus(id, "In Progress");
-            return RedirectToAction("Index");
+            return RedirectToAction("Admin");
         }
 
         // ADMIN: Update status to "Done"
@@ -47,7 +47,7 @@ namespace HostelManagementSystem.Controllers
         public IActionResult MarkDone(int id)
         {
             _service.UpdateComplaintStatus(id, "Done");
-            return RedirectToAction("Index");
+            return RedirectToAction("Admin");
         }
 
         // ADMIN: Delete complaint
@@ -55,7 +55,7 @@ namespace HostelManagementSystem.Controllers
         public IActionResult Delete(int id)
         {
             _service.DeleteComplaint(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("Admin");
         }
 
         // ADMIN: View complaint details

@@ -4,13 +4,13 @@ namespace HostelManagementSystem.Repositories
 {
     public interface IAttendanceRepository
     {
-        void Push(AttendanceRecord record);
-        AttendanceRecord Pop();
-        List<AttendanceRecord> GetAttendanceList();
-        AttendanceRecord Peek();
-        bool IsEmpty();
-        int Count();
-        bool Search(string name);
+        void AddAttendance(AttendanceRecord record);
+        List<AttendanceRecord> GetAll();
+        List<AttendanceRecord> GetByStudent(int studentid);
+        AttendanceRecord GetLatest(int studentid);
+        bool HasAttendance(int studentid);
+        int Count(int studentid);
+        
 
     }
 }
