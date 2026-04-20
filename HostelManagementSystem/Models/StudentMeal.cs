@@ -1,9 +1,15 @@
-﻿namespace HostelManagementSystem.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HostelManagementSystem.Models
 {
     public class StudentMeal
     {
-        public int StudentId { get; set; } // unique student
-        public string Date { get; set; } = string.Empty;
+        [Key]
+        public int MealID { get; set; }
+        public int StudentID { get; set; } 
+        public DateTime Date { get; set; }
+
+        [MaxLength(50)]
         public string MealType { get; set; } = string.Empty; // Breakfast / Lunch / Dinner
         public DateTime Time { get; set; } = DateTime.Now;
     }

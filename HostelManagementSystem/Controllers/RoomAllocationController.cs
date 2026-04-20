@@ -1,5 +1,4 @@
-﻿/*
- using HostelManagementSystem.Models;
+﻿using HostelManagementSystem.Models;
 using HostelManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,107 +17,51 @@ namespace HostelManagementSystem.Controllers
             _studentService = studentService;
         }
 
-        public IActionResult QueueList()
-        {
-            var allStudents = _studentService.GetAllStudents();
-            var waiting = _service.GetQueue();
-
-            ViewBag.AllStudents = allStudents;
-            return View("~/Views/RoomAllocation/QueueList.cshtml", waiting);
-        }
-
-        [HttpPost]
-        public IActionResult AddToQueue(Student student)
-        {
-            if (student == null)
-            {
-                TempData["Error"] = "Invalid student information.";
-                return RedirectToAction("QueueList");
-            }
-
-            _service.AddToQueue(student);
-            return RedirectToAction("QueueList");
-        }
-
-        public IActionResult AllocateRoom()
-        {
-            var student = _service.AllocateRoom();
-
-            if (student == null)
-            {
-                TempData["Message"] = "No students in queue.";
-                return View("~/Views/RoomAllocation/Allocated.cshtml", null);
-            }
-
-            return View("~/Views/RoomAllocation/Allocated.cshtml", student);
-        }
-    }
-}
-*/
-using HostelManagementSystem.Models;
-using HostelManagementSystem.Services;
-using Microsoft.AspNetCore.Mvc;
-
-namespace HostelManagementSystem.Controllers
-{
-    public class RoomAllocationController : Controller
-    {
-        private readonly IRoomAllocationService _service;
-        private readonly IStudentService _studentService;
-
-        public RoomAllocationController(
-            IRoomAllocationService service,
-            IStudentService studentService)
-        {
-            _service = service;
-            _studentService = studentService;
-        }
-
-        // ------------------ NEW INDEX ACTION ------------------
-        // This makes /RoomAllocation/Index open QueueList automatically
         public IActionResult Index()
         {
-            return RedirectToAction("QueueList");
-        }
-
-        // ------------------ YOUR MAIN PAGE ------------------
-        // These routes all show the QueueList page
-        [Route("RoomAllocation/QueueList")]
-        [Route("RoomAllocation/AddRoom")]
-        [Route("RoomAllocation/Index")]
-        public IActionResult QueueList()
-        {
-            var allStudents = _studentService.GetAllStudents();
-            var waiting = _service.GetQueue();
-
-            ViewBag.AllStudents = allStudents;
-            return View("~/Views/RoomAllocation/QueueList.cshtml", waiting);
+            var rooms = _service.GetAllRooms();
+            ViewBag.AllStudents = _studentService.GetAllStudents();
+            return View("~/Views/RoomAllocation/Index.cshtml", rooms);
         }
 
         [HttpPost]
-        public IActionResult AddToQueue(Student student)
+        [ValidateAntiForgeryToken]
+        public IActionResult AllocateRoom(int studentId, string roomNo)
         {
-            if (student == null)
+            if (string.IsNullOrEmpty(roomNo))
             {
-                TempData["Error"] = "Invalid student information.";
-                return RedirectToAction("QueueList");
+                TempData["Error"] = "Room number cannot be empty.";
+                return RedirectToAction("Index");
             }
 
-            _service.AddToQueue(student);
-            return RedirectToAction("QueueList");
+            try
+            {
+                _service.AllocateRoom(studentId, roomNo);
+                TempData["Success"] = $"Room {roomNo} allocated successfully.";
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+            }
+
+            return RedirectToAction("Index");
         }
 
-        public IActionResult AllocateRoom()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeallocateRoom(int studentId)
         {
-            var student = _service.AllocateRoom();
+            _service.DeallocateRoom(studentId);
+            TempData["Success"] = "Room deallocated successfully.";
+            return RedirectToAction("Index");
+        }
 
-            if (student == null)
-            {
-                TempData["Message"] = "No students in queue.";
-                return View("~/Views/RoomAllocation/Allocated.cshtml", null);
-            }
-
-            return View("~/Views/RoomAllocation/Allocated.cshtml", student);
+        public IActionResult CheckRoom(string roomNo)
+        {
+            var student = _service.GetByRoom(roomNo);
+            ViewBag.RoomNo = roomNo;
+            ViewBag.IsTaken = student != null;
+            return View("~/Views/RoomAllocation/CheckRoom.cshtml", student);
         }
     }
 }

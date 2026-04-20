@@ -8,30 +8,28 @@ namespace HostelManagementSystem.Controllers
     {
         private readonly IMenuService _menuService;
 
-
         public MenuController(IMenuService menuService)
         {
             _menuService = menuService;
         }
 
-
-        // List all menus
-        public ActionResult Index()
+        
+        public IActionResult Index()
         {
             var menus = _menuService.GetMenus();
             return View(menus);
         }
 
-
-        // Add Menu
-        public ActionResult AddMenu()
+        
+        public IActionResult AddMenu()
         {
             return View();
         }
 
-
+        
         [HttpPost]
-        public ActionResult AddMenu(Menu menu)
+        [ValidateAntiForgeryToken]
+        public IActionResult AddMenu(Menu menu)
         {
             if (ModelState.IsValid)
             {
@@ -41,18 +39,20 @@ namespace HostelManagementSystem.Controllers
             return View(menu);
         }
 
-
-        // Edit Menu
-        public ActionResult EditMenu(string date)
+        
+        public IActionResult EditMenu(int id)
         {
-            var menu = _menuService.GetMenu(date);
-            if (menu == null) return NotFound();
+            var menu = _menuService.GetMenuById(id);
+            if (menu == null)
+                return NotFound();
+
             return View(menu);
         }
 
-
+        
         [HttpPost]
-        public ActionResult EditMenu(Menu menu)
+        [ValidateAntiForgeryToken]
+        public IActionResult EditMenu(Menu menu)
         {
             if (ModelState.IsValid)
             {
@@ -62,11 +62,12 @@ namespace HostelManagementSystem.Controllers
             return View(menu);
         }
 
-
-        // Delete Menu
-        public ActionResult DeleteMenu(string date)
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteMenu(int id)
         {
-            _menuService.RemoveMenu(date);
+            _menuService.RemoveMenu(id);
             return RedirectToAction("Index");
         }
     }

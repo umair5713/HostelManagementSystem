@@ -9,14 +9,14 @@ namespace HostelManagementSystem.Controllers
         private readonly IMenuService _menuService;
         private readonly IStudentMealService _mealService;
 
-        
-        private int StudentId => 1;
-
         public StudentMenuController(IMenuService menuService, IStudentMealService mealService)
         {
             _menuService = menuService;
             _mealService = mealService;
         }
+
+        // TODO: Replace with User.FindFirst("StudentID") when auth is ready
+        private int GetStudentId() => 1;
 
         public IActionResult Index()
         {
@@ -25,26 +25,27 @@ namespace HostelManagementSystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult AcceptMeal(string date, string mealType)
+        public IActionResult AcceptMeal(DateTime date, string mealType)
         {
-            _mealService.AcceptMeal(StudentId, date, mealType);
-            TempData["Message"] = $"{mealType} on {date} accepted!";
+            int studentId = GetStudentId();
+            _mealService.AcceptMeal(studentId, date, mealType);
+            TempData["Message"] = $"{mealType} on {date:dd/MM/yyyy} accepted!";
             return RedirectToAction("Index");
         }
-        [HttpPost]
-        public IActionResult AcceptAllMeals(string date)
-        {
-            // Accept all meals for the student
-            _mealService.AcceptMeal(StudentId, date, "Breakfast");
-            _mealService.AcceptMeal(StudentId, date, "Lunch");
-            _mealService.AcceptMeal(StudentId, date, "Dinner");
 
-            TempData["Message"] = $"All meals on {date} accepted!";
+        [HttpPost]
+        public IActionResult AcceptAllMeals(DateTime date)
+        {
+            int studentId = GetStudentId();
+            _mealService.AcceptAllMeals(studentId, date);
+            TempData["Message"] = $"All meals on {date:dd/MM/yyyy} accepted!";
             return RedirectToAction("Index");
         }
+
         public IActionResult MealHistory()
         {
-            var meals = _mealService.GetMealsByStudent(StudentId);
+            int studentId = GetStudentId();
+            var meals = _mealService.GetMealsByStudent(studentId);
             return View(meals);
         }
     }

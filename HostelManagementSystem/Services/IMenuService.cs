@@ -5,9 +5,10 @@ namespace HostelManagementSystem.Services
     public interface IMenuService
     {
         void CreateMenu(Menu menu);
-        Menu[] GetMenus();
-        Menu GetMenu(string date);
+        List<Menu> GetMenus();
+        Menu? GetMenu(DateTime date);
+        Menu? GetMenuById(int menuId);
         void EditMenu(Menu menu);
-        void RemoveMenu(string date);
+        void RemoveMenu(int menuId);
     }
 }
