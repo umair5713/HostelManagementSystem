@@ -5,9 +5,10 @@ namespace HostelManagementSystem.Repositories
     public interface IMenuRepository
     {
         void AddMenu(Menu menu);
-        Menu[] GetAllMenus();
-        Menu GetMenuByDate(string date);
+        List<Menu> GetAllMenus();
+        Menu? GetMenuByDate(DateTime date);
+        Menu? GetById(int menuId);
         void UpdateMenu(Menu menu);
-        void DeleteMenu(string date);
+        void DeleteMenu(int menuId);
     }
 }

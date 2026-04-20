@@ -1,146 +1,77 @@
-﻿using HostelManagementSystem.Models;
+﻿using HostelManagementSystem.Data;
+using HostelManagementSystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HostelManagementSystem.Repositories
 {
     public class MenuRepository : IMenuRepository
     {
-        //private List<Menu> menus = new List<Menu>();
+        private readonly AppDbContext _context;
 
-        //public void AddMenu(Menu menu)
-        //{
-        //    // Check if menu for the same date exists
-        //    var existing = menus.FirstOrDefault(m => m.Date == menu.Date);
-        //    if (existing == null)
-        //    {
-        //        menus.Add(menu);
-        //    }
-        //    else
-        //    {
-        //        // Update existing
-        //        existing.Breakfast = menu.Breakfast;
-        //        existing.Lunch = menu.Lunch;
-        //        existing.Dinner = menu.Dinner;
-        //    }
-        //}
+        public MenuRepository(AppDbContext context)
+        {
+            _context = context;
+        }
 
-        //public Menu[] GetAllMenus()
-        //{
-        //    return menus.ToArray();
-        //}
-
-        //public Menu GetMenuByDate(string date)
-        //{
-        //    return menus.FirstOrDefault(m => m.Date == date);
-        //}
-
-        //public void UpdateMenu(Menu menu)
-        //{
-        //    var existing = menus.FirstOrDefault(m => m.Date == menu.Date);
-        //    if (existing != null)
-        //    {
-        //        existing.Breakfast = menu.Breakfast;
-        //        existing.Lunch = menu.Lunch;
-        //        existing.Dinner = menu.Dinner;
-        //    }
-        //}
-
-        //public void DeleteMenu(string date)
-        //{
-        //    var menu = menus.FirstOrDefault(m => m.Date == date);
-        //    if (menu != null)
-        //    {
-        //        menus.Remove(menu);
-        //    }
-        //}
-
-
-
-        private List<Menu> menus = new List<Menu>();
-
-        // Add menu or update if same date exists (without LINQ)
+        // ADD
         public void AddMenu(Menu menu)
         {
-            Menu existing = null;
-
-            // Manually search for existing menu by date
-            for (int i = 0; i < menus.Count; i++)
-            {
-                if (menus[i].Date == menu.Date)
-                {
-                    existing = menus[i];
-                    break;
-                }
-            }
-
-            if (existing == null)
-            {
-                // Add new menu
-                menus.Add(menu);
-            }
-            else
-            {
-                // Update existing menu
-                existing.Breakfast = menu.Breakfast;
-                existing.Lunch = menu.Lunch;
-                existing.Dinner = menu.Dinner;
-            }
+            _context.Database.ExecuteSqlRaw(
+                @"INSERT INTO tbl_menu (Date, Breakfast, Lunch, Dinner)
+              VALUES ({0}, {1}, {2}, {3})",
+                menu.Date,
+                menu.Breakfast,
+                menu.Lunch,
+                menu.Dinner
+            );
         }
 
-        // Get all menus using arrays
-        public Menu[] GetAllMenus()
+        // GET ALL
+        public List<Menu> GetAllMenus()
         {
-            Menu[] allMenus = new Menu[menus.Count];
-            for (int i = 0; i < menus.Count; i++)
-            {
-                allMenus[i] = menus[i];
-            }
-            return allMenus;
+            return _context.Menus
+                      .FromSqlRaw("SELECT MenuID, Date, Breakfast, Lunch, Dinner FROM tbl_menu ORDER BY Date DESC")
+                      .ToList();
         }
 
-        // Get menu by date arrays
-        public Menu GetMenuByDate(string date)
+        // GET BY DATE
+        public Menu? GetMenuByDate(DateTime date)
         {
-            for (int i = 0; i < menus.Count; i++)
-            {
-                if (menus[i].Date == date)
-                {
-                    return menus[i];
-                }
-            }
-            return null; // Not found
+            return _context.Menus
+                      .FromSqlRaw("SELECT MenuID, Date, Breakfast, Lunch, Dinner FROM tbl_menu WHERE CAST(Date AS DATE) = CAST({0} AS DATE)", date)
+                      .FirstOrDefault();
         }
 
-        // Update menu by date manually
+        // GET BY ID
+        public Menu? GetById(int menuId)
+        {
+            return _context.Menus
+                      .FromSqlRaw("SELECT MenuID, Date, Breakfast, Lunch, Dinner FROM tbl_menu WHERE MenuID = {0}", menuId)
+                      .FirstOrDefault();
+        }
+
+        // UPDATE
         public void UpdateMenu(Menu menu)
         {
-            for (int i = 0; i < menus.Count; i++)
-            {
-                if (menus[i].Date == menu.Date)
-                {
-                    menus[i].Breakfast = menu.Breakfast;
-                    menus[i].Lunch = menu.Lunch;
-                    menus[i].Dinner = menu.Dinner;
-                    break;
-                }
-            }
+            _context.Database.ExecuteSqlRaw(
+                @"UPDATE tbl_menu 
+              SET Date = {0}, Breakfast = {1}, Lunch = {2}, Dinner = {3}
+              WHERE MenuID = {4}",
+                menu.Date,
+                menu.Breakfast,
+                menu.Lunch,
+                menu.Dinner,
+                menu.MenuID
+            );
         }
 
-        // Delete menu by date manually
-        public void DeleteMenu(string date)
+        // DELETE
+        public void DeleteMenu(int menuId)
         {
-            for (int i = 0; i < menus.Count; i++)
-            {
-                if (menus[i].Date == date)
-                {
-                    // Remove by shifting elements manually
-                    for (int j = i; j < menus.Count - 1; j++)
-                    {
-                        menus[j] = menus[j + 1];
-                    }
-                    menus.RemoveAt(menus.Count - 1); // Remove last duplicate
-                    break;
-                }
-            }
+            _context.Database.ExecuteSqlRaw(
+                "DELETE FROM tbl_menu WHERE MenuID = {0}",
+                menuId
+            );
         }
     }
 }

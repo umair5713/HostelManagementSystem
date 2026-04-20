@@ -4,9 +4,10 @@ namespace HostelManagementSystem.Repositories
 {
     public interface IRoomAllocationRepository
     {
-        void enqueue(Student student);
-        Student dequeue();
-        bool empty();
-        List<Student> get_queue();
+        void AllocateRoom(int studentId, string roomNo);
+        void DeallocateRoom(int studentId);
+        List<Student> GetAllRooms();
+        Student? GetByRoom(string roomNo);
+        bool IsRoomTaken(string roomNo);
     }
 }

@@ -6,6 +6,6 @@ namespace HostelManagementSystem.Repositories
     {
         void AcceptMeal(StudentMeal meal);
         List<StudentMeal> GetMealsByStudent(int studentId);
-        bool HasAccepted(int studentId, string date, string mealType);
+        bool HasAccepted(int studentId, DateTime date, string mealType);
     }
 }

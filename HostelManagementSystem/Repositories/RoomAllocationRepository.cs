@@ -1,61 +1,61 @@
-﻿using HostelManagementSystem.Models;
+﻿using HostelManagementSystem.Data;
+using HostelManagementSystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HostelManagementSystem.Repositories
 
 {
     public class RoomAllocationRepository : IRoomAllocationRepository
     {
-       
-        private RoomQueueNode? front;
-        private RoomQueueNode? back;
+        private readonly AppDbContext _context;
 
-        public void enqueue(Student student)
+        public RoomAllocationRepository(AppDbContext context)
         {
-            RoomQueueNode newnode = new RoomQueueNode { Data = student, next = null };
-
-            if (front == null)
-            {
-                front = back = newnode;
-            }
-            else
-            {
-                back.next = newnode;
-                back = newnode;
-            }
+            _context = context;
         }
 
-        public Student dequeue()
+        // ALLOCATE ROOM — update student's RoomNo in tbl_students
+        public void AllocateRoom(int studentId, string roomNo)
         {
-            if (front == null)
-            {
-                return null;
-            }
-
-            Student removedStudent = front.Data;
-            front = front.next;
-
-            if (front == null)
-                back = null;   // queue is now empty
-
-            return removedStudent;
+            _context.Database.ExecuteSqlRaw(
+                "UPDATE tbl_students SET RoomNo = {0} WHERE StudentID = {1}",
+                roomNo,
+                studentId
+            );
         }
 
-        public bool empty()
+        // DEALLOCATE ROOM — clear student's RoomNo
+        public void DeallocateRoom(int studentId)
         {
-            return front == null;
+            _context.Database.ExecuteSqlRaw(
+                "UPDATE tbl_students SET RoomNo = '' WHERE StudentID = {0}",
+                studentId
+            );
         }
 
-        public List<Student> get_queue()
+        // GET ALL STUDENTS WITH ROOMS
+        public List<Student> GetAllRooms()
         {
-            List<Student> list = new List<Student>();
-            RoomQueueNode? temp = front;
-
-            while (temp != null)
-            {
-                list.Add(temp.Data);
-                temp = temp.next;
-            }
-            return list;
+            return _context.Students
+                      .FromSqlRaw("SELECT StudentID, StudentName, RoomNo, FeeStatus FROM tbl_students WHERE RoomNo != '' ORDER BY RoomNo ASC")
+                      .ToList();
         }
+
+        // GET STUDENT BY ROOM
+        public Student? GetByRoom(string roomNo)
+        {
+            return _context.Students
+                      .FromSqlRaw("SELECT StudentID, StudentName, RoomNo, FeeStatus FROM tbl_students WHERE RoomNo = {0}", roomNo)
+                      .FirstOrDefault();
+        }
+
+        // CHECK IF ROOM IS ALREADY TAKEN
+        public bool IsRoomTaken(string roomNo)
+        {
+            var result = _context.Students
+                            .FromSqlRaw("SELECT StudentID, StudentName, RoomNo, FeeStatus FROM tbl_students WHERE RoomNo = {0}", roomNo)
+                            .FirstOrDefault();
+            return result != null;
+        }       
     }
 }

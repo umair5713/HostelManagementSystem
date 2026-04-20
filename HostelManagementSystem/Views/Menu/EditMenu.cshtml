@@ -1,23 +1,46 @@
-﻿@model Menu
-<h2>Edit Menu</h2>
+﻿@model HostelManagementSystem.Models.Menu
 
-@using (Html.BeginForm())
-{
-    <div class="form-group">
-        @Html.LabelFor(m => m.Date)
-        @Html.TextBoxFor(m => m.Date, new { @class = "form-control", type = "date", @readonly = "readonly" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Breakfast)
-        @Html.TextBoxFor(m => m.Breakfast, new { @class = "form-control" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Lunch)
-        @Html.TextBoxFor(m => m.Lunch, new { @class = "form-control" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Dinner)
-        @Html.TextBoxFor(m => m.Dinner, new { @class = "form-control" })
-    </div>
-    <button type="submit" class="btn btn-primary">Update</button>
+@{
+    ViewData["Title"] = "Edit Menu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<div class="container mt-4" style="max-width: 600px;">
+    <h2>Edit Menu</h2>
+
+    <form method="post" asp-action="EditMenu">
+        @Html.AntiForgeryToken()
+
+        @* ✅ MenuID must be submitted so UPDATE knows which row to update *@
+        <input type="hidden" name="MenuID" value="@Model.MenuID" />
+
+        <div class="mb-3">
+            <label class="form-label">Date</label>
+            <input type="date" name="Date" class="form-control"
+                   value="@Model.Date.ToString("yyyy-MM-dd")" readonly />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Breakfast</label>
+            <input type="text" name="Breakfast" class="form-control"
+                   value="@Model.Breakfast" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Lunch</label>
+            <input type="text" name="Lunch" class="form-control"
+                   value="@Model.Lunch" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Dinner</label>
+            <input type="text" name="Dinner" class="form-control"
+                   value="@Model.Dinner" required />
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

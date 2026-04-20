@@ -10,8 +10,8 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 
-builder.Services.AddSingleton<IRoomAllocationRepository, RoomAllocationRepository>();
-builder.Services.AddSingleton<IRoomAllocationService, RoomAllocationService>();
+builder.Services.AddScoped<IRoomAllocationRepository, RoomAllocationRepository>();
+builder.Services.AddScoped<IRoomAllocationService, RoomAllocationService>();
 
 builder.Services.AddScoped<IAttendanceRepository, AttendanceRepository>();
 builder.Services.AddScoped<IAttendanceService, AttendanceService>();
@@ -22,11 +22,11 @@ builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IComplaintRepository, ComplaintRepository>();
 builder.Services.AddScoped<IComplaintService, ComplaintService>();
 
-builder.Services.AddSingleton<IMenuRepository, MenuRepository>();
-builder.Services.AddSingleton<IMenuService, MenuService>();
+builder.Services.AddScoped<IMenuRepository, MenuRepository>();
+builder.Services.AddScoped<IMenuService, MenuService>();
 
-builder.Services.AddSingleton<IStudentMealRepository, StudentMealRepository>();
-builder.Services.AddSingleton<IStudentMealService, StudentMealService>();
+builder.Services.AddScoped<IStudentMealRepository, StudentMealRepository>();
+builder.Services.AddScoped<IStudentMealService, StudentMealService>();
 
 
 // Add services to the container.

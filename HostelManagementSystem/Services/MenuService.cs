@@ -16,14 +16,19 @@ namespace HostelManagementSystem.Services
             _repo.AddMenu(menu);
         }
 
-        public Menu[] GetMenus()
+        public List<Menu> GetMenus()
         {
             return _repo.GetAllMenus();
         }
 
-        public Menu GetMenu(string date)
+        public Menu? GetMenu(DateTime date)
         {
             return _repo.GetMenuByDate(date);
+        }
+
+        public Menu? GetMenuById(int menuId)
+        {
+            return _repo.GetById(menuId);
         }
 
         public void EditMenu(Menu menu)
@@ -31,9 +36,9 @@ namespace HostelManagementSystem.Services
             _repo.UpdateMenu(menu);
         }
 
-        public void RemoveMenu(string date)
+        public void RemoveMenu(int menuId)
         {
-            _repo.DeleteMenu(date);
+            _repo.DeleteMenu(menuId);
         }
     }
 }

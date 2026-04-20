@@ -1,0 +1,130 @@
+﻿@model HostelManagementSystem.Models.Student
+
+@{
+    ViewData["Title"] = "Room Check";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .result-card {
+        max-width: 500px;
+        margin: 50px auto;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .result-header {
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        color: white;
+        padding: 25px;
+        font-size: 1.5rem;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .result-body {
+        padding: 30px;
+        text-align: center;
+        background: white;
+    }
+
+        .result-body p {
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+    .btn-modern {
+        background: #2575fc;
+        color: white;
+        font-weight: 500;
+        padding: 10px 25px;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 15px;
+    }
+
+        .btn-modern:hover {
+            background: #6a11cb;
+            color: white;
+        }
+
+    .alert-custom {
+        border-radius: 12px;
+        padding: 20px;
+        font-size: 1rem;
+    }
+
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f0;
+        text-align: left;
+    }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-row strong {
+            color: #4a5568;
+        }
+</style>
+
+<div class="result-card">
+
+    <div class="result-header">
+        🏠 Room @ViewBag.RoomNo — Check Result
+    </div>
+
+    <div class="result-body">
+        @if (Model == null)
+        {
+            <!-- ROOM IS FREE -->
+            <div class="alert alert-success alert-custom">
+                ✅ Room <strong>@ViewBag.RoomNo</strong> is currently <strong>available</strong>.
+            </div>
+        }
+        else
+        {
+            <!-- ROOM IS OCCUPIED -->
+            <div class="alert alert-warning alert-custom">
+                ⚠️ Room <strong>@ViewBag.RoomNo</strong> is currently <strong>occupied</strong>.
+            </div>
+
+            <div class="mt-3">
+                <div class="detail-row">
+                    <strong>Student ID:</strong>
+                    <span>@Model.StudentID</span>
+                </div>
+                <div class="detail-row">
+                    <strong>Student Name:</strong>
+                    <span>@Model.StudentName</span>
+                </div>
+                <div class="detail-row">
+                    <strong>Room No:</strong>
+                    <span>@Model.RoomNo</span>
+                </div>
+                <div class="detail-row">
+                    <strong>Fee Status:</strong>
+                    <span>
+                        @if (Model.FeeStatus)
+                        {
+                            <span class="badge bg-success">Paid</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Unpaid</span>
+                        }
+                    </span>
+                </div>
+            </div>
+        }
+
+        <a href="/RoomAllocation/Index" class="btn-modern">🔙 Back to Room Allocation</a>
+    </div>
+
+</div>
