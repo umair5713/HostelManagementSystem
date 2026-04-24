@@ -12,14 +12,24 @@ namespace HostelManagementSystem.Repositories
             _context = context;
         }
 
+        //public void AddStudent(Student student)
+        //{
+        //    _context.Database.ExecuteSqlRaw(
+        //        @"INSERT INTO tbl_students (StudentName, RoomNo, FeeStatus)
+        //      VALUES ({0}, {1}, {2})",
+        //        student.StudentName,
+        //        student.RoomNo,
+        //        student.FeeStatus
+        //    );
+        //}
+
         public void AddStudent(Student student)
         {
             _context.Database.ExecuteSqlRaw(
-                @"INSERT INTO tbl_students (StudentName, RoomNo, FeeStatus)
-              VALUES ({0}, {1}, {2})",
-                student.StudentName,
-                student.RoomNo,
-                student.FeeStatus
+                "EXEC sp_RegisterStudent @StudentName, @RoomNo",
+                new Microsoft.Data.SqlClient.SqlParameter("@StudentName", student.StudentName),
+                new Microsoft.Data.SqlClient.SqlParameter("@RoomNo",
+                    string.IsNullOrEmpty(student.RoomNo) ? DBNull.Value : student.RoomNo)
             );
         }
 

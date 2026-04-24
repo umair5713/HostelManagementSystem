@@ -1,4 +1,4 @@
-﻿@{
+﻿@* @{
     ViewData["Title"] = "Dashboard";
 }
 
@@ -286,4 +286,146 @@
         font-size: 13px;
         color: #718096;
     }
-</style>
+</style> *@
+
+@model HostelManagementSystem.Models.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<!-- Dashboard Stats Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="dashboard-card">
+            <div class="card-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                <i class="fas fa-users"></i>
+            </div>
+            <h3>@Model.TotalStudents</h3>
+            <p>Total Students</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="dashboard-card">
+            <div class="card-icon" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                <i class="fas fa-door-open"></i>
+            </div>
+            <h3>@Model.UnassignedStudents</h3>
+            <p>Unassigned Students</p>
+        </div>
+    </div>
+    <!-- Fees Paid -->
+    <div class="col-md-3">
+        <div class="dashboard-card">
+            <div class="card-icon" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+                <i class="fas fa-rupee-sign"></i>
+            </div>
+            <h3>@Model.FeesPaid</h3>
+            <p>Fees Paid</p>
+        </div>
+    </div>
+
+    <!-- Fees Pending -->
+    <div class="col-md-3">
+        <div class="dashboard-card">
+            <div class="card-icon" style="background: linear-gradient(135deg, #fa709a, #fee140);">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <h3>@Model.FeesPending</h3>
+            <p>Fees Pending</p>
+            <div class="card-trend urgent">
+                <i class="fas fa-exclamation-circle"></i> Needs attention
+            </div>
+        </div>
+    </div>
+    @* <div class="col-md-3"> *@
+    @*     <div class="dashboard-card">
+            <div class="card-icon" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3>@Model.PendingComplaints</h3>
+            <p>Pending Complaints</p>
+            <div class="card-trend urgent">
+                <i class="fas fa-exclamation-circle"></i> Needs attention
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="dashboard-card">
+            <div class="card-icon" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+                <i class="fas fa-rupee-sign"></i>
+            </div>
+            <h3>@Model.FeesPaid</h3>
+            <p>Fees Paid (Students)</p>
+        </div>
+    </div> *@
+</div>
+
+<!-- Activities + Menu -->
+<div class="row g-4">
+    <div class="col-md-8">
+        <div class="content-card">
+            <div class="card-header-custom">
+                <h4><i class="fas fa-chart-line"></i> Recent Activities</h4>
+            </div>
+            <div class="activity-list">
+                @if (Model.RecentActivities.Any())
+                {
+                    @foreach (var activity in Model.RecentActivities)
+                    {
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: @activity.IconGradient">
+                                <i class="@activity.IconClass"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h5>@activity.Title</h5>
+                                <p>@activity.Description</p>
+                                <span class="activity-time">@activity.TimeAgo</span>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-muted">No recent activities.</p>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="content-card">
+            <div class="card-header-custom">
+                <h4><i class="fas fa-calendar-alt"></i> Today's Menu</h4>
+            </div>
+            <div class="menu-preview">
+                @if (Model.TodaysMenu != null)
+                {
+                    <div class="menu-item">
+                        <div class="menu-icon">🌅</div>
+                        <div>
+                            <h5>Breakfast</h5>
+                            <p>@Model.TodaysMenu.Breakfast</p>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-icon">🌞</div>
+                        <div>
+                            <h5>Lunch</h5>
+                            <p>@Model.TodaysMenu.Lunch</p>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-icon">🌙</div>
+                        <div>
+                            <h5>Dinner</h5>
+                            <p>@Model.TodaysMenu.Dinner</p>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted">No menu added for today.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
