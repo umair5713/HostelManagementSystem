@@ -17,12 +17,26 @@ namespace HostelManagementSystem.Controllers
             _studentService = studentService;
         }
 
+        //public IActionResult Index()
+        //{
+        //    var rooms = _service.GetAllRooms();
+        //    ViewBag.AllStudents = _studentService.GetAllStudents();
+        //    return View("~/Views/RoomAllocation/Index.cshtml", rooms);
+        //}
         public IActionResult Index()
         {
-            var rooms = _service.GetAllRooms();
-            ViewBag.AllStudents = _studentService.GetAllStudents();
-            return View("~/Views/RoomAllocation/Index.cshtml", rooms);
+            // Top table: students WITH a room
+            var allocatedStudents = _service.GetAllRooms();
+
+            // Bottom table: students WITHOUT a room
+            var unassignedStudents = _studentService.GetAllStudents()
+                .Where(s => string.IsNullOrEmpty(s.RoomNo))
+                .ToList();
+
+            ViewBag.AllStudents = unassignedStudents;
+            return View("~/Views/RoomAllocation/Index.cshtml", allocatedStudents);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

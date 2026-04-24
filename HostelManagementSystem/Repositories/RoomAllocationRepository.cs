@@ -18,9 +18,10 @@ namespace HostelManagementSystem.Repositories
         public void AllocateRoom(int studentId, string roomNo)
         {
             _context.Database.ExecuteSqlRaw(
-                "UPDATE tbl_students SET RoomNo = {0} WHERE StudentID = {1}",
-                roomNo,
+                "UPDATE tbl_students SET RoomNo = NULL WHERE StudentID = {0}", 
                 studentId
+            //roomNo,
+
             );
         }
 
@@ -37,7 +38,7 @@ namespace HostelManagementSystem.Repositories
         public List<Student> GetAllRooms()
         {
             return _context.Students
-                      .FromSqlRaw("SELECT StudentID, StudentName, RoomNo, FeeStatus FROM tbl_students WHERE RoomNo != '' ORDER BY RoomNo ASC")
+                      .FromSqlRaw("SELECT StudentID, StudentName, RoomNo, FeeStatus FROM tbl_students WHERE RoomNo IS NOT NULL AND RoomNo != '' ORDER BY RoomNo ASC")
                       .ToList();
         }
 
