@@ -4,7 +4,7 @@ namespace HostelManagementSystem.Data
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options):base(options) { }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Complaint> Complaints { get; set; }
@@ -19,6 +19,8 @@ namespace HostelManagementSystem.Data
             modelBuilder.Entity<Student>().ToTable("tbl_students");
             modelBuilder.Entity<StudentMeal>().ToTable("tbl_student_meals");
             modelBuilder.Entity<Menu>().ToTable("tbl_menu");
+            modelBuilder.Entity<User>().ToTable("tbl_user");
+            modelBuilder.Entity<Role>().ToTable("tbl_role");
         }
 
     }
