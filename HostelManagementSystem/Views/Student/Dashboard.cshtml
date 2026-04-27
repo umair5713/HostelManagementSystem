@@ -5,366 +5,386 @@
     Layout = "~/Views/Shared/_StudentLayout.cshtml";
 }
 
-<!-- Welcome Header -->
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="content-card" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 30px;">
-            <h2 style="margin: 0 0 10px 0; font-weight: 700;">Welcome, @Model.StudentName! 👋</h2>
-            <p style="margin: 0; font-size: 16px; opacity: 0.9;">@Model.CurrentDate.ToString("dddd, MMMM dd, yyyy")</p>
-        </div>
-    </div>
-</div>
+<div class="dashboard-grid">
 
-<!-- Dashboard Stats Cards -->
-<div class="row g-4 mb-4">
-    <div class="col-md-3">
-        <div class="dashboard-card">
-            <div class="card-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
-                <i class="fas fa-door-open"></i>
-            </div>
-            <h3>@Model.RoomNumber</h3>
-            <p>Your Room</p>
-            <div class="card-trend">
-                <i class="fas fa-building"></i> @Model.Stats.HostelBlock
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="dashboard-card">
-            <div class="card-icon" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
-                <i class="fas fa-calendar-check"></i>
-            </div>
-            <h3>@Model.Stats.TotalAttendance%</h3>
-            <p>Attendance</p>
-            <div class="card-trend">
-                <i class="fas fa-arrow-up"></i> Good standing
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="dashboard-card">
-            <div class="card-icon" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
-                <i class="fas fa-exclamation-circle"></i>
-            </div>
-            <h3>@Model.Stats.PendingComplaints</h3>
-            <p>Pending Complaints</p>
-            <div class="card-trend @(Model.Stats.PendingComplaints > 0 ? "urgent" : "")">
-                <i class="fas @(Model.Stats.PendingComplaints > 0 ? "fa-clock" : "fa-check-circle")"></i>
-                @(Model.Stats.PendingComplaints > 0 ? "In Progress" : "All Clear")
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="dashboard-card">
-            <div class="card-icon" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
-                <i class="fas fa-rupee-sign"></i>
-            </div>
-            <h3>Rs. @Model.Stats.OutstandingBills</h3>
-            <p>Outstanding Bills</p>
-            <div class="card-trend @(Model.Stats.OutstandingBills > 0 ? "urgent" : "")">
-                <i class="fas @(Model.Stats.OutstandingBills > 0 ? "fa-exclamation-triangle" : "fa-check-circle")"></i>
-                @(Model.Stats.OutstandingBills > 0 ? "Payment Due" : "Paid")
-            </div>
-        </div>
-    </div>
-</div>
+    <!-- LEFT COLUMN -->
+    <div class="left-column">
 
-<!-- Main Content Row -->
-<div class="row g-4">
-    <!-- Left Column: Curfew & Hostel Info -->
-    <div class="col-md-8">
-        <!-- Curfew Time Card -->
-        <div class="content-card mb-4">
-            <div class="card-header-custom">
-                <h4><i class="fas fa-clock"></i> Important Information</h4>
+        <!-- STUDENT PROFILE CARD -->
+        <div class="info-card profile-card">
+            <div class="profile-avatar">
+                <img src="https://ui-avatars.com/api/?name=@Model.StudentName&background=667eea&color=fff&size=80"
+                     alt="Student" />
             </div>
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <div class="info-box" style="background: linear-gradient(135deg, rgba(245, 87, 108, 0.1), rgba(240, 147, 251, 0.1)); border-left: 4px solid #f5576c;">
-                        <h5 style="color: #f5576c; margin-bottom: 10px;">
-                            <i class="fas fa-moon"></i> Curfew Time
-                        </h5>
-                        <h2 style="margin: 10px 0; color: #2d3748;">@Model.CurfewTime</h2>
-                        <p style="color: #718096; margin: 0; font-size: 13px;">Please return before this time</p>
+            <div class="profile-info">
+                <h3>@Model.StudentName</h3>
+                <p class="profile-email"><i class="fas fa-envelope"></i> @Model.Email</p>
+                <div class="profile-details">
+                    <div class="profile-detail-item">
+                        <i class="fas fa-id-card"></i>
+                        <span>ID: @Model.StudentID</span>
+                    </div>
+                    <div class="profile-detail-item">
+                        <i class="fas fa-door-open"></i>
+                        <span>Room: @Model.RoomNumber</span>
+                    </div>
+                    <div class="profile-detail-item">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Attendance: @Model.AttendancePercent%</span>
+                    </div>
+                    <div class="profile-detail-item">
+                        <i class="fas fa-money-bill"></i>
+                        <span>Fee: @(Model.Stats.OutstandingBills == 0 ? "Paid" : "Unpaid")</span>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="info-box" style="background: linear-gradient(135deg, rgba(79, 172, 254, 0.1), rgba(0, 242, 254, 0.1)); border-left: 4px solid #4facfe;">
-                        <h5 style="color: #4facfe; margin-bottom: 10px;">
-                            <i class="fas fa-phone"></i> Emergency Contact
-                        </h5>
-                        <p style="margin: 5px 0; color: #2d3748;"><strong>Warden:</strong> +92-321-1234567</p>
-                        <p style="margin: 5px 0; color: #2d3748;"><strong>Security:</strong> +92-300-9876543</p>
+
+                <!-- ATTENDANCE PROGRESS BAR -->
+                <div class="attendance-bar-label">
+                    <span>Attendance</span>
+                    <span>@Model.AttendancePercent%</span>
+                </div>
+                <div class="attendance-bar">
+                    <div class="attendance-fill"
+                         style="width: @Model.AttendancePercent%;
+                        background: @(Model.AttendancePercent >= 75 ? "#10b981" : Model.AttendancePercent >= 50 ? "#f59e0b" : "#ef4444")">
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Quick Actions Card -->
-        <div class="content-card">
-            <div class="card-header-custom">
-                <h4><i class="fas fa-bolt"></i> Quick Actions</h4>
+        <!-- IMPORTANT INFORMATION -->
+        <div class="info-card">
+            <h5><i class="fas fa-clock"></i> Important Information</h5>
+            <div class="info-grid">
+                <div class="info-item curfew">
+                    <i class="fas fa-moon"></i>
+                    <div>
+                        <span class="info-label">Curfew Time</span>
+                        <span class="info-value">@Model.CurfewTime</span>
+                        <span class="info-sub">Please return before this time</span>
+                    </div>
+                </div>
+                <div class="info-item emergency">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <span class="info-label">Emergency Contact</span>
+                        <span class="info-value">Warden: +92-321-1234567</span>
+                        <span class="info-sub">Security: +92-300-9876543</span>
+                    </div>
+                </div>
             </div>
-            <div class="quick-actions">
-                <a href="@Url.Action("Index", "Attendance")" class="action-btn" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+        </div>
+
+        <!-- QUICK ACTIONS -->
+        <div class="info-card">
+            <h5><i class="fas fa-bolt"></i> Quick Actions</h5>
+            <div class="quick-actions-grid">
+                <a href="/Attendance/StudentView" class="quick-action-btn btn-purple">
                     <i class="fas fa-calendar-check"></i>
                     <span>View Attendance</span>
                 </a>
-                <a href="@Url.Action("Create", "Complaints")" class="action-btn" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                <a href="/Complaints/Submit" class="quick-action-btn btn-pink">
                     <i class="fas fa-exclamation-circle"></i>
                     <span>Lodge Complaint</span>
                 </a>
-                <a href="@Url.Action("Index", "Billing")" class="action-btn" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                <a href="#" class="quick-action-btn btn-cyan">
                     <i class="fas fa-file-invoice-dollar"></i>
                     <span>View Bills</span>
                 </a>
-                <a href="@Url.Action("Index", "StudentMenu")" class="action-btn" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
-                    <i class="fas fa-calendar-week"></i>
+                <a href="/StudentMenu/Index" class="quick-action-btn btn-green">
+                    <i class="fas fa-calendar-alt"></i>
                     <span>Weekly Menu</span>
                 </a>
             </div>
         </div>
+
     </div>
 
-    <!-- Right Column: Today's Menu -->
-    <div class="col-md-4">
-        <div class="content-card">
-            <div class="card-header-custom">
-                <h4><i class="fas fa-utensils"></i> Today's Menu</h4>
-            </div>
-            <div class="menu-preview">
-                @foreach (var meal in Model.TodaysMenu)
+    <!-- RIGHT COLUMN — TODAY'S MENU -->
+    <div class="right-column">
+        <div class="info-card">
+            <h5><i class="fas fa-utensils"></i> Today's Menu</h5>
+            @if (Model.TodaysMenu == null || Model.TodaysMenu.Count == 0)
+            {
+                <div class="alert-info">No menu available for today.</div>
+            }
+            else
+            {
+                @foreach (var item in Model.TodaysMenu)
                 {
                     <div class="menu-item">
                         <div class="menu-icon">
-                            @if (meal.MealType == "Breakfast")
+                            @if (item.MealType == "Breakfast")
                             {
-                                <text>🌅</text>
+                                <span>🌅</span>
                             }
-                            else if (meal.MealType == "Lunch")
+                            else if (item.MealType == "Lunch")
                             {
-                                <text>🌞</text>
+                                <span>🍱</span>
                             }
                             else
                             {
-                                <text>🌙</text>
+                                <span>🌙</span>
                             }
                         </div>
-                        <div>
-                            <h5>@meal.MealType</h5>
-                            <p>@meal.Description</p>
-                            <span class="meal-time">
-                                <i class="fas fa-clock"></i> @meal.Time
-                            </span>
+                        <div class="menu-details">
+                            <strong>@item.MealType</strong>
+                            <span>@item.Description</span>
+                            <small>@item.Time</small>
                         </div>
                     </div>
                 }
-            </div>
+            }
         </div>
     </div>
+
 </div>
 
 <style>
-    /* Dashboard Cards */
-    .dashboard-card {
-        background: white;
-        border-radius: 20px;
-        padding: 25px;
-        text-align: center;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 1px solid rgba(102, 126, 234, 0.1);
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 20px;
+        padding: 10px;
     }
 
-        .dashboard-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
-        }
-
-        .dashboard-card h3 {
-            font-size: 32px;
-            font-weight: 800;
-            margin: 10px 0;
-            color: #2d3748;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .dashboard-card p {
-            color: #718096;
-            font-size: 14px;
-            font-weight: 600;
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-    .card-icon {
-        width: 60px;
-        height: 60px;
-        border-radius: 15px;
+    .left-column, .right-column {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 15px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        flex-direction: column;
+        gap: 20px;
     }
 
-        .card-icon i {
-            font-size: 28px;
-            color: white;
+    .info-card {
+        background: white;
+        border-radius: 16px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    }
+
+        .info-card h5 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 20px;
         }
 
-    .card-trend {
-        margin-top: 12px;
-        font-size: 13px;
-        color: #48bb78;
-        font-weight: 600;
+            .info-card h5 i {
+                margin-right: 8px;
+                color: #667eea;
+            }
+
+    /* PROFILE CARD */
+    .profile-card {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
     }
 
-        .card-trend i {
+    .profile-avatar img {
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        border: 3px solid #667eea;
+    }
+
+    .profile-info {
+        flex: 1;
+    }
+
+        .profile-info h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 0 0 4px 0;
+        }
+
+    .profile-email {
+        color: #667eea;
+        font-size: 13px;
+        margin-bottom: 12px;
+    }
+
+        .profile-email i {
             margin-right: 5px;
         }
 
-        .card-trend.urgent {
-            color: #f56565;
-        }
-
-    /* Content Cards */
-    .content-card {
-        background: white;
-        border-radius: 20px;
-        padding: 25px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-        border: 1px solid rgba(102, 126, 234, 0.1);
+    .profile-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 15px;
     }
 
-    .card-header-custom {
+    .profile-detail-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #4a5568;
+    }
+
+        .profile-detail-item i {
+            color: #667eea;
+            width: 16px;
+        }
+
+    /* ATTENDANCE BAR */
+    .attendance-bar-label {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-        padding-bottom: 15px;
-        border-bottom: 2px solid rgba(102, 126, 234, 0.1);
-    }
-
-        .card-header-custom h4 {
-            margin: 0;
-            font-size: 18px;
-            font-weight: 700;
-            color: #2d3748;
-        }
-
-        .card-header-custom i {
-            margin-right: 10px;
-            color: #667eea;
-        }
-
-    /* Info Boxes */
-    .info-box {
-        padding: 20px;
-        border-radius: 15px;
-        height: 100%;
-        transition: all 0.3s;
-    }
-
-        .info-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-
-    /* Quick Actions */
-    .quick-actions {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-    }
-
-    .action-btn {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 25px 20px;
-        border-radius: 15px;
-        color: white;
-        text-decoration: none;
-        transition: all 0.3s;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        text-align: center;
-    }
-
-        .action-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
-            color: white;
-        }
-
-        .action-btn i {
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-
-        .action-btn span {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-    /* Menu Preview */
-    .menu-preview {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .menu-item {
-        display: flex;
-        gap: 15px;
-        padding: 15px;
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
-        border-radius: 12px;
-        transition: all 0.3s;
-    }
-
-        .menu-item:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
-        }
-
-    .menu-icon {
-        font-size: 32px;
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .menu-item h5 {
-        margin: 0 0 5px 0;
-        font-size: 15px;
-        font-weight: 600;
-        color: #2d3748;
-    }
-
-    .menu-item p {
-        margin: 0 0 8px 0;
         font-size: 13px;
+        font-weight: 600;
+        color: #4a5568;
+        margin-bottom: 6px;
+    }
+
+    .attendance-bar {
+        background: #e2e8f0;
+        border-radius: 10px;
+        height: 10px;
+        overflow: hidden;
+    }
+
+    .attendance-fill {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.5s ease;
+    }
+
+    /* INFO GRID */
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .info-item {
+        border-radius: 12px;
+        padding: 15px;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+        .info-item i {
+            font-size: 20px;
+            margin-top: 3px;
+        }
+
+    .info-item.curfew {
+        background: rgba(239, 68, 68, 0.08);
+        border-left: 3px solid #ef4444;
+    }
+
+        .info-item.curfew i { color: #ef4444; }
+
+    .info-item.emergency {
+        background: rgba(59, 130, 246, 0.08);
+        border-left: 3px solid #3b82f6;
+    }
+
+        .info-item.emergency i { color: #3b82f6; }
+
+    .info-label {
+        display: block;
+        font-size: 12px;
+        color: #718096;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .info-value {
+        display: block;
+        font-size: 15px;
+        font-weight: 700;
+        color: #2d3748;
+        margin: 3px 0;
+    }
+
+    .info-sub {
+        display: block;
+        font-size: 12px;
         color: #718096;
     }
 
-    .meal-time {
-        font-size: 12px;
-        color: #a0aec0;
-        font-style: italic;
+    /* QUICK ACTIONS */
+    .quick-actions-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
     }
 
-        .meal-time i {
-            margin-right: 5px;
+    .quick-action-btn {
+        border-radius: 12px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-decoration: none;
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+        .quick-action-btn i { font-size: 24px; }
+
+        .quick-action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            color: white;
         }
-   }
+
+    .btn-purple { background: linear-gradient(135deg, #667eea, #764ba2); }
+    .btn-pink   { background: linear-gradient(135deg, #f093fb, #f5576c); }
+    .btn-cyan   { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+    .btn-green  { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+
+    /* MENU ITEMS */
+    .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+        .menu-item:last-child { border-bottom: none; }
+
+    .menu-icon {
+        font-size: 30px;
+        width: 50px;
+        text-align: center;
+    }
+
+    .menu-details {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .menu-details strong {
+            font-size: 15px;
+            color: #2d3748;
+        }
+
+        .menu-details span {
+            font-size: 13px;
+            color: #718096;
+            margin: 2px 0;
+        }
+
+        .menu-details small {
+            font-size: 12px;
+            color: #a0aec0;
+        }
+
+    .alert-info {
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        color: #3b82f6;
+        padding: 15px;
+        border-radius: 10px;
+    }
+</style>

@@ -3,81 +3,71 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CAMPUS NEST </title>
-
-    <!-- Bootstrap CSS -->
+    <title>@ViewData["Title"] - CAMPUS NEST</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Your Custom CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
 </head>
 <body>
     <div class="admin-container">
-        <!-- Animated Background -->
+
         <div class="animated-bg">
             <div class="shape shape-1"></div>
             <div class="shape shape-2"></div>
             <div class="shape shape-3"></div>
         </div>
 
-        <!-- Sidebar Navigation -->
+        <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo-container">
                     <i class="fas fa-hotel logo-icon"></i>
                     <div>
                         <h2>CAMPUS NEST</h2>
-                        <span class="logo-subtitle">User Panel</span>
+                        <span class="logo-subtitle">Student Panel</span>
                     </div>
                 </div>
             </div>
 
+            @{
+            
+                var dbContext    = Context.RequestServices.GetService<HostelManagementSystem.Data.AppDbContext>();
+                var sessionId    = Context.Session.GetInt32("StudentID");
+                var sessionName  = Context.Session.GetString("Username") ?? string.Empty;
+                var currentStudent = sessionId.HasValue
+                    ? dbContext?.Students.FirstOrDefault(s => s.StudentID == sessionId.Value)
+                    : null;
+            }
+
+
             <nav class="sidebar-nav">
-                <!-- Dashboard -->
-                <a href="/Student/Dashboard" class="nav-item active">
+                <a href="/Student/Dashboard" class="nav-item">
                     <i class="fas fa-chart-line nav-icon"></i>
                     <span>Dashboard</span>
                     <div class="nav-glow"></div>
                 </a>
-
-                <!-- Daily Mess / Menu -->
+                 <a href="/Student/Profile" class="nav-item">
+                    <i class="fas fa-user-circle nav-icon"></i>
+                    <span>My Profile</span>
+                    <div class="nav-glow"></div>
+                </a>
                 <a href="/StudentMenu/Index" class="nav-item">
                     <i class="fas fa-utensils nav-icon"></i>
                     <span>Daily Menu</span>
                     <div class="nav-glow"></div>
                 </a>
-
-                <!-- Attendance / Meal History -->
-                @* <a href="/Attendance/Index" class="nav-item"> *@
-                   @* <a asp-controller="Attendance" asp-action="Index" class="nav-link">
-                    <i class="fas fa-clipboard-check nav-icon"></i>
-                    <span>View Attendance</span>
-                    <div class="nav-glow"></div> *@
-                </a>
-
                 <a asp-controller="Attendance" asp-action="StudentView" class="nav-item">
                     <i class="fas fa-user-check nav-icon"></i>
-                    <span>View My Attendance</span>
+                    <span>My Attendance</span>
                     <div class="nav-glow"></div>
                 </a>
-
-               
-
-                <!-- Submit Complaints -->
-                <a href="/Complaints/Submit" class="nav-item">
+                <a href="/Student/SubmitComplaint" class="nav-item">
                     <i class="fas fa-exclamation-circle nav-icon"></i>
                     <span>Submit Complaint</span>
                     <div class="nav-glow"></div>
                 </a>
-
-                <!-- View My Complaints -->
                 <a href="/Complaints/Index" class="nav-item">
                     <i class="fas fa-list-alt nav-icon"></i>
                     <span>My Complaints</span>
@@ -86,7 +76,6 @@
 
                 <div class="nav-separator"></div>
 
-                <!-- Logout -->
                 <a href="/Auth/Logout" class="nav-item">
                     <i class="fas fa-sign-out-alt nav-icon"></i>
                     <span>Logout</span>
@@ -96,9 +85,8 @@
 
         </aside>
 
-        <!-- Main Content Area -->
+        <!-- MAIN CONTENT -->
         <main class="main-content">
-            <!-- Top Header Bar -->
             <header class="top-header">
                 <div class="header-left">
                     <h1 class="page-title">
@@ -115,33 +103,28 @@
                         <span class="notification-badge">3</span>
                     </div>
                     <div class="user-profile">
-                        <img src="https://ui-avatars.com/api/?name=Admin&background=667eea&color=fff" alt="Admin">
+                        <img src="https://ui-avatars.com/api/?name=@sessionName&background=667eea&color=fff"
+                             alt="Student">
                         <div class="user-details">
-                            <span class="user-name">Admin</span>
-                            <span class="user-role">Administrator</span>
+                            <span class="user-name">@sessionName</span>
+                            <span class="user-role">Student</span>
                         </div>
                     </div>
                 </div>
             </header>
 
-            <!-- Content Wrapper -->
             <div class="content-wrapper">
                 @RenderBody()
             </div>
         </main>
     </div>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Your Custom JS -->
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
-        // Add active class to current nav item
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const currentPath = window.location.pathname;
             const navItems = document.querySelectorAll('.nav-item');
-
             navItems.forEach(item => {
                 item.classList.remove('active');
                 if (item.getAttribute('href') === currentPath) {
@@ -153,3 +136,92 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+<style>
+    .sidebar-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 15px;
+        margin: 8px 12px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-avatar img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .sidebar-student-info {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .sidebar-student-name {
+        color: white;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .sidebar-student-email {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 11px;
+    }
+
+    .sidebar-info-card {
+        margin: 8px 12px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .sidebar-info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+        .sidebar-info-item i {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+            margin-top: 3px;
+            width: 14px;
+        }
+
+        .sidebar-info-item div {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+    .info-label {
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .info-value {
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .text-success { color: #10b981 !important; }
+    .text-danger  { color: #ef4444 !important; }
+</style>

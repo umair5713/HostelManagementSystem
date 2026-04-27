@@ -2,12 +2,18 @@
 {
     public class StudentDashboardViewModel
     {
-        public string StudentName { get; set; }
-        public string RoomNumber { get; set; }
+        public int StudentID { get; set; }
+        public string StudentName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
+        public string CNIC { get; set; } = string.Empty;
+        public int Semester { get; set; }
+        public string RoomNumber { get; set; } = string.Empty;
+        public double AttendancePercent { get; set; }
         public DateTime CurrentDate { get; set; }
-        public string CurfewTime { get; set; }
-        public List<MenuItem> TodaysMenu { get; set; }
-        public DashboardStats Stats { get; set; }
+        public string CurfewTime { get; set; } = string.Empty;
+        public List<MenuItem> TodaysMenu { get; set; } = new();
+        public DashboardStats Stats { get; set; } = new();
     }
 
     public class MenuItem
