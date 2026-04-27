@@ -38,7 +38,7 @@ namespace HostelManagementSystem.Repositories
         public List<Student> GetAllRooms()
         {
             return _context.Students
-                      .FromSqlRaw("SELECT StudentID, StudentName, RoomNo, FeeStatus FROM tbl_students WHERE RoomNo IS NOT NULL AND RoomNo != '' ORDER BY RoomNo ASC")
+                      .FromSqlRaw("SELECT StudentID, StudentName,Email, PhoneNumber, CNIC, Semester, RoomNo, FeeStatus FROM tbl_students WHERE RoomNo IS NOT NULL AND RoomNo != '' ORDER BY RoomNo ASC")
                       .ToList();
         }
 
@@ -46,7 +46,7 @@ namespace HostelManagementSystem.Repositories
         public Student? GetByRoom(string roomNo)
         {
             return _context.Students
-                      .FromSqlRaw("SELECT StudentID, StudentName, RoomNo, FeeStatus FROM tbl_students WHERE RoomNo = {0}", roomNo)
+                      .FromSqlRaw("SELECT StudentID, StudentName,Email, PhoneNumber, CNIC, Semester,, RoomNo, FeeStatus FROM tbl_students WHERE RoomNo = {0}", roomNo)
                       .FirstOrDefault();
         }
 
@@ -54,7 +54,7 @@ namespace HostelManagementSystem.Repositories
         public bool IsRoomTaken(string roomNo)
         {
             var result = _context.Students
-                            .FromSqlRaw("SELECT StudentID, StudentName, RoomNo, FeeStatus FROM tbl_students WHERE RoomNo = {0}", roomNo)
+                            .FromSqlRaw("SELECT StudentID, StudentName,Email, PhoneNumber, CNIC, Semester, RoomNo, FeeStatus FROM tbl_students WHERE RoomNo = {0}", roomNo)
                             .FirstOrDefault();
             return result != null;
         }       

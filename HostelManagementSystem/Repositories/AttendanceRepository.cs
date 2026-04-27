@@ -16,7 +16,7 @@ namespace HostelManagementSystem.Repositories
         public void AddAttendance(AttendanceRecord record)
         {
             var student = _context.Students
-                .FromSqlRaw("SELECT StudentID, StudentName, RoomNo, FeeStatus FROM tbl_students WHERE StudentID = {0}", record.StudentID)
+                .FromSqlRaw("SELECT StudentID, StudentName,Email, PhoneNumber, CNIC, Semester, RoomNo, FeeStatus FROM tbl_students WHERE StudentID = {0}", record.StudentID)
                 .FirstOrDefault();
             if (student == null)
                 throw new Exception($"Student with ID {record.StudentID} does not exist in tbl_students.");
