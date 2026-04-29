@@ -1,0 +1,57 @@
+﻿@model HostelManagementSystem.Models.Fee
+
+@{
+    ViewData["Title"] = "Pay Fee";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+<h2>Pay Fee</h2>
+
+<div class="card p-4 shadow-sm">
+    <h4>Fee Details</h4>
+    <hr />
+
+    <p><strong>Fee ID:</strong> @Model.FeeID</p>
+    <p><strong>Student ID:</strong> @Model.StudentID</p>
+    <p><strong>Amount:</strong> Rs. @Model.Amount</p>
+    <p><strong>Due Date:</strong> @Model.DueDate.ToShortDateString()</p>
+
+    <p>
+        <strong>Status:</strong>
+        @if (Model.IsPaid)
+        {
+            <span class="text-success">Paid</span>
+        }
+        else
+        {
+            <span class="text-danger">Pending</span>
+        }
+    </p>
+
+    <hr />
+
+    @if (!Model.IsPaid)
+    {
+        <form asp-action="ConfirmPay" method="post">
+            <input type="hidden" name="id" value="@Model.FeeID" />
+
+            <button type="submit" class="btn btn-success">
+                Pay Now
+            </button>
+
+            <a asp-action="MyFees" class="btn btn-secondary">
+                Cancel
+            </a>
+        </form>
+    }
+    else
+    {
+        <div class="alert alert-success">
+            This fee has already been paid.
+        </div>
+
+        <a asp-action="MyFees" class="btn btn-primary">
+            Back to My Fees
+        </a>
+    }
+</div>

@@ -1,0 +1,27 @@
+﻿@model HostelManagementSystem.Models.Fee
+
+@{
+    ViewData["Title"] = "Fee Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card p-4 shadow">
+    <h4>Fee Details</h4>
+
+    <p><strong>Student ID:</strong> @Model.StudentID</p>
+    <p><strong>Amount:</strong> @Model.Amount</p>
+    <p><strong>Due Date:</strong> @Model.DueDate.ToShortDateString()</p>
+    <p>
+        <strong>Status:</strong>
+        @if (Model.IsPaid)
+        {
+            <span class="text-success">Paid</span>
+        }
+        else
+        {
+            <span class="text-danger">Unpaid</span>
+        }
+    </p>
+
+    <a href="/Fee/Index" class="btn btn-secondary">Back</a>
+</div>

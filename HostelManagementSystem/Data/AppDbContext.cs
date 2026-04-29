@@ -12,6 +12,7 @@ namespace HostelManagementSystem.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<StudentMeal> StudentMeals { get; set; }
         public DbSet<Menu> Menus { get; set; }
+        public DbSet<Fee> Fees { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Complaint>().ToTable("tbl_complaints");
@@ -19,6 +20,7 @@ namespace HostelManagementSystem.Data
             modelBuilder.Entity<Student>().ToTable("tbl_students");
             modelBuilder.Entity<StudentMeal>().ToTable("tbl_student_meals");
             modelBuilder.Entity<Menu>().ToTable("tbl_menu");
+            modelBuilder.Entity<Fee>().ToTable("tbl_fees");
             modelBuilder.Entity<User>().ToTable("tbl_user");
             modelBuilder.Entity<Role>().ToTable("tbl_role");
         }
