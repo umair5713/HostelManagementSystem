@@ -14,64 +14,49 @@
 //}
 using HostelManagementSystem.Models;
 using HostelManagementSystem.Data;
+using HostelManagementSystem.Repositories;
 
 namespace HostelManagementSystem.Services
 {
     public class StudentService : IStudentService
     {
-        private readonly AppDbContext _context;
+        private readonly IStudentRepository _repo;
 
-        public StudentService(AppDbContext context)
+        public StudentService(IStudentRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         // Register Student
         public void RegisterStudent(Student student)
         {
-            _context.Students.Add(student);
-            _context.SaveChanges();
+            _repo.AddStudent(student);
         }
 
-        // Get All Students
         public List<Student> GetAllStudents()
         {
-            return _context.Students.ToList();
+            return _repo.GetStudents();
         }
 
-        // Get Student by ID
         public Student? GetById(int studentId)
         {
-            return _context.Students
-                .FirstOrDefault(s => s.StudentID == studentId);
+            return _repo.GetById(studentId);
         }
 
-        // Update Student
         public void UpdateStudent(Student student)
         {
-            _context.Students.Update(student);
-            _context.SaveChanges();
+            _repo.UpdateStudent(student);
         }
 
-        // Delete Student
         public void DeleteStudent(int studentId)
         {
-            var student = _context.Students
-                .FirstOrDefault(s => s.StudentID == studentId);
-
-            if (student != null)
-            {
-                _context.Students.Remove(student);
-                _context.SaveChanges();
-            }
+            _repo.DeleteStudent(studentId);
         }
 
         // Sort Students by ID
         public List<Student> SortById()
         {
-            return _context.Students
-                .OrderBy(s => s.StudentID)
-                .ToList();
+            return _repo.GetSortedByID();
         }
     }
 }

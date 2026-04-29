@@ -12,16 +12,6 @@ namespace HostelManagementSystem.Repositories
             _context = context;
         }
 
-        //public void AddStudent(Student student)
-        //{
-        //    _context.Database.ExecuteSqlRaw(
-        //        @"INSERT INTO tbl_students (StudentName, RoomNo, FeeStatus)
-        //      VALUES ({0}, {1}, {2})",
-        //        student.StudentName,
-        //        student.RoomNo,
-        //        student.FeeStatus
-        //    );
-        //}
 
         public void AddStudent(Student student)
         {
@@ -37,7 +27,7 @@ namespace HostelManagementSystem.Repositories
         public List<Student> GetStudents()
         {
             return _context.Students
-                      .FromSqlRaw("SELECT StudentID, StudentName, RoomNo, FeeStatus FROM tbl_students")
+                      .FromSqlRaw("SELECT StudentID, StudentName,Email, PhoneNumber, CNIC, Semester, RoomNo, FeeStatus FROM tbl_students")
                       .ToList();
         }
 
@@ -45,7 +35,7 @@ namespace HostelManagementSystem.Repositories
         public Student? GetById(int studentId)
         {
             return _context.Students
-                      .FromSqlRaw("SELECT StudentID, StudentName, RoomNo, FeeStatus FROM tbl_students WHERE StudentID = {0}", studentId)
+                      .FromSqlRaw("SELECT StudentID, StudentName,Email, PhoneNumber, CNIC, Semester, RoomNo, FeeStatus FROM tbl_students WHERE StudentID = {0}", studentId)
                       .FirstOrDefault();
         }
 
@@ -76,7 +66,7 @@ namespace HostelManagementSystem.Repositories
         public List<Student> GetSortedByID()
         {
             return _context.Students
-                      .FromSqlRaw("SELECT StudentID, StudentName, RoomNo, FeeStatus FROM tbl_students ORDER BY StudentID ASC")
+                      .FromSqlRaw("SELECT StudentID, StudentName,Email, PhoneNumber, CNIC, Semester, RoomNo, FeeStatus FROM tbl_students ORDER BY StudentID ASC")
                       .ToList();
         }
 

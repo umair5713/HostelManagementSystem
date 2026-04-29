@@ -28,6 +28,9 @@ builder.Services.AddScoped<IMenuService, MenuService>();
 builder.Services.AddScoped<IStudentMealRepository, StudentMealRepository>();
 builder.Services.AddScoped<IStudentMealService, StudentMealService>();
 
+builder.Services.AddScoped<IFeeRepository, FeeRepository>();
+builder.Services.AddScoped<IFeeService, FeeService>();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

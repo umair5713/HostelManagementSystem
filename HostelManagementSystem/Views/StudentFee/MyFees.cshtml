@@ -1,0 +1,57 @@
+﻿@model List<HostelManagementSystem.Models.Fee>
+
+@{
+    ViewData["Title"] = "My Fees";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+<div class="card shadow p-4">
+    <h4>My Fees</h4>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Amount</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Action</th> 
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var fee in Model)
+            {
+                <tr>
+                    <td>@fee.Amount</td>
+                    <td>@fee.DueDate.ToShortDateString()</td>
+
+                    <td>
+                        @if (fee.IsPaid)
+                        {
+                            <span class="badge bg-success">Paid</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Unpaid</span>
+                        }
+                    </td>
+
+                    <td>
+                        @if (!fee.IsPaid)
+                        {
+                            <a asp-action="Pay"
+                               asp-route-id="@fee.FeeID"
+                               class="btn btn-primary btn-sm">
+                                Pay
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="text-muted">—</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

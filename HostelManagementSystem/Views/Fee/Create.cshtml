@@ -1,0 +1,59 @@
+﻿```html
+@model HostelManagementSystem.Models.Fee
+
+@{
+    ViewData["Title"] = "Add Fee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card shadow p-4">
+    <h4 class="mb-4">Add Fee</h4>
+
+    <form asp-action="Create" method="post">
+
+        <!-- Student Dropdown -->
+        <div class="mb-3">
+            <label class="form-label">Select Student</label>
+            <select asp-for="StudentID" class="form-select">
+                <option value="">-- Select Student --</option>
+                @foreach (var s in ViewBag.Students)
+                {
+                    <option value="@s.StudentID">
+                        @s.StudentName - Room: @s.RoomNo
+                    </option>
+                }
+            </select>
+            <span asp-validation-for="StudentID" class="text-danger"></span>
+        </div>
+
+        <!-- Amount -->
+        <div class="mb-3">
+            <label class="form-label">Amount</label>
+            <input asp-for="Amount" class="form-control" placeholder="Enter fee amount" />
+            <span asp-validation-for="Amount" class="text-danger"></span>
+        </div>
+
+        <!-- Due Date -->
+        <div class="mb-3">
+            <label class="form-label">Due Date</label>
+            <input asp-for="DueDate" type="date" class="form-control" />
+            <span asp-validation-for="DueDate" class="text-danger"></span>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-save"></i> Save Fee
+            </button>
+
+            <a href="/Fee/Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+```

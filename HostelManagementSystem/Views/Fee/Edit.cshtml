@@ -1,0 +1,26 @@
+﻿@model HostelManagementSystem.Models.Fee
+
+@{
+    ViewData["Title"] = "Edit Fee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card p-4 shadow">
+    <h4>Edit Fee</h4>
+
+    <form method="post">
+        <input type="hidden" asp-for="FeeID" />
+
+        <div class="mb-3">
+            <label>Amount</label>
+            <input asp-for="Amount" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Due Date</label>
+            <input asp-for="DueDate" type="date" class="form-control" />
+        </div>
+
+        <button class="btn btn-success">Update</button>
+    </form>
+</div>

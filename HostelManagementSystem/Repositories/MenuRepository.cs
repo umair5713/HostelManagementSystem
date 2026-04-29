@@ -18,7 +18,7 @@ namespace HostelManagementSystem.Repositories
         {
             _context.Database.ExecuteSqlRaw(
                 @"INSERT INTO tbl_menu (Date, Breakfast, Lunch, Dinner)
-              VALUES ({0}, {1}, {2}, {3})",
+              VALUES     ({0}, {1}, {2}, {3})",
                 menu.Date,
                 menu.Breakfast,
                 menu.Lunch,
