@@ -34,8 +34,22 @@ namespace HostelManagementSystem.Controllers
             return RedirectToAction("Index");
         }
 
+        //public IActionResult StudentView(int studentId)
+        //{
+        //    var records = _service.GetByStudent(studentId);
+        //    ViewBag.StudentId = studentId;
+        //    return View(records);
+        //}
+
         public IActionResult StudentView(int studentId)
         {
+            // If studentId not passed, get from session
+            if (studentId == 0)
+                studentId = HttpContext.Session.GetInt32("StudentID") ?? 0;
+
+            if (studentId == 0)
+                return RedirectToAction("Login", "Auth");
+
             var records = _service.GetByStudent(studentId);
             ViewBag.StudentId = studentId;
             return View(records);

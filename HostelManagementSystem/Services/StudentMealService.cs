@@ -40,5 +40,30 @@ namespace HostelManagementSystem.Services
         {
             return _repo.HasAccepted(studentId, date, mealType);
         }
+
+        public void DeclineMeal(int studentId, DateTime date, string mealType)
+        {
+            var meal = new StudentMeal
+            {
+                StudentID = studentId,
+                Date = date,
+                MealType = mealType,
+                Status = "Declined",
+                Time = DateTime.Now
+            };
+            _repo.AcceptMeal(meal);
+        }
+
+        public void DeclineAllMeals(int studentId, DateTime date)
+        {
+            DeclineMeal(studentId, date, "Breakfast");
+            DeclineMeal(studentId, date, "Lunch");
+            DeclineMeal(studentId, date, "Dinner");
+        }
+
+        public bool HasDeclined(int studentId, DateTime date, string mealType)
+        {
+            return _repo.HasDeclined(studentId, date, mealType);
+        }
     }
 }
