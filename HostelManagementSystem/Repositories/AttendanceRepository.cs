@@ -12,25 +12,44 @@ namespace HostelManagementSystem.Repositories
             _context = context;
         }
 
-        
+
+        //public void AddAttendance(AttendanceRecord record)
+        //{
+        //    var student = _context.Students
+        //        .FromSqlRaw("SELECT StudentID, StudentName,Email, PhoneNumber, CNIC, Semester, RoomNo, FeeStatus FROM tbl_students WHERE StudentID = {0}", record.StudentID)
+        //        .FirstOrDefault();
+        //    if (student == null)
+        //        throw new Exception($"Student with ID {record.StudentID} does not exist in tbl_students.");
+
+        //    _context.Database.ExecuteSqlRaw(
+        //        @"INSERT INTO tbl_attendance (StudentID, StudentName, Time)
+        //      VALUES ({0}, {1}, {2})",
+        //        record.StudentID,
+        //        record.StudentName,
+        //        DateTime.Now
+        //    );
+        //}
+
         public void AddAttendance(AttendanceRecord record)
         {
             var student = _context.Students
-                .FromSqlRaw("SELECT StudentID, StudentName,Email, PhoneNumber, CNIC, Semester, RoomNo, FeeStatus FROM tbl_students WHERE StudentID = {0}", record.StudentID)
+                .FromSqlRaw(
+                    "SELECT StudentID, StudentName, RoomNo, FeeStatus, Email, PhoneNumber, CNIC, Semester FROM tbl_students WHERE StudentID = {0}",
+                    record.StudentID)
                 .FirstOrDefault();
+
             if (student == null)
-                throw new Exception($"Student with ID {record.StudentID} does not exist in tbl_students.");
+                throw new Exception($"Student with ID {record.StudentID} does not exist.");
 
             _context.Database.ExecuteSqlRaw(
-                @"INSERT INTO tbl_attendance (StudentID, StudentName, Time)
-              VALUES ({0}, {1}, {2})",
+                "INSERT INTO tbl_attendance (StudentID, StudentName, Time) VALUES ({0}, {1}, {2})",
                 record.StudentID,
                 record.StudentName,
                 DateTime.Now
             );
         }
 
-        
+
         public List<AttendanceRecord> GetAll()
         {
             return _context.AttendanceRecords

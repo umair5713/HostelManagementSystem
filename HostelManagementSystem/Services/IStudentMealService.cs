@@ -8,5 +8,10 @@ namespace HostelManagementSystem.Services
         void AcceptAllMeals(int studentId, DateTime date);
         List<StudentMeal> GetMealsByStudent(int studentId);
         bool HasAccepted(int studentId, DateTime date, string mealType);
+
+        void DeclineMeal(int studentId, DateTime date, string mealType);
+        void DeclineAllMeals(int studentId, DateTime date);
+
+        bool HasDeclined(int studentId, DateTime date, string mealType);
     }
 }

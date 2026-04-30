@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HostelManagementSystem.Models.Menu>
+﻿@* @model IEnumerable<HostelManagementSystem.Models.Menu>
 @{
     Layout = "~/Views/Shared/_StudentLayout.cshtml";
 }
@@ -44,4 +44,233 @@ else
 @if (TempData["Message"] != null)
 {
     <div class="alert alert-success">@TempData["Message"]</div>
+} *@
+
+@model IEnumerable<HostelManagementSystem.Models.Menu>
+@{
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+    var breakfastOpen = (bool)ViewBag.BreakfastOpen;
+    var lunchOpen = (bool)ViewBag.LunchOpen;
+    var dinnerOpen = (bool)ViewBag.DinnerOpen;
+    var breakfastStatus = (string)ViewBag.BreakfastStatus;
+    var lunchStatus = (string)ViewBag.LunchStatus;
+    var dinnerStatus = (string)ViewBag.DinnerStatus;
 }
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">🍽️ Daily Menu</h2>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">@TempData["Message"]</div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">No menu available today.</div>
+    }
+    else
+    {
+        @foreach (var menu in Model)
+        {
+            <div class="card shadow-sm mb-4">
+                <div class="card-header text-white"
+                     style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                    <h5 class="mb-0">📅 @menu.Date.ToString("dddd, dd MMMM yyyy")</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+
+                        <!-- BREAKFAST -->
+                        <div class="col-md-4">
+                            <div class="meal-card p-3 rounded border">
+                                <h5>🌅 Breakfast</h5>
+                                <p class="text-muted">@menu.Breakfast</p>
+                                <small class="text-info">Window: 7:00 AM – 9:00 AM</small>
+                                <div id="timer-breakfast" class="timer-display mt-1"></div>
+                                <div class="mt-2">
+                                    @if (breakfastStatus == "Accepted")
+                                    {
+                                        <span class="badge bg-success w-100 p-2">✅ Accepted</span>
+                                    }
+                                    else if (breakfastStatus == "Declined")
+                                    {
+                                        <span class="badge bg-danger w-100 p-2">❌ Declined</span>
+                                    }
+                                    else if (breakfastOpen)
+                                    {
+                                        <form method="post" asp-action="AcceptMeal" class="mb-1">
+                                            <input type="hidden" name="date" value="@menu.Date.ToString("yyyy-MM-dd")" />
+                                            <input type="hidden" name="mealType" value="Breakfast" />
+                                            <button class="btn btn-success btn-sm w-100">✅ Accept</button>
+                                        </form>
+                                        <form method="post" asp-action="DeclineMeal">
+                                            <input type="hidden" name="date" value="@menu.Date.ToString("yyyy-MM-dd")" />
+                                            <input type="hidden" name="mealType" value="Breakfast" />
+                                            <button class="btn btn-danger btn-sm w-100">❌ Decline</button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary w-100 p-2">⏰ Not Accepted</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- LUNCH -->
+                        <div class="col-md-4">
+                            <div class="meal-card p-3 rounded border">
+                                <h5>🌞 Lunch</h5>
+                                <p class="text-muted">@menu.Lunch</p>
+                                <small class="text-info">Window: 12:00 PM – 2:00 PM</small>
+                                <div id="timer-lunch" class="timer-display mt-1"></div>
+                                <div class="mt-2">
+                                    @if (lunchStatus == "Accepted")
+                                    {
+                                        <span class="badge bg-success w-100 p-2">✅ Accepted</span>
+                                    }
+                                    else if (lunchStatus == "Declined")
+                                    {
+                                        <span class="badge bg-danger w-100 p-2">❌ Declined</span>
+                                    }
+                                    else if (lunchOpen)
+                                    {
+                                        <form method="post" asp-action="AcceptMeal" class="mb-1">
+                                            <input type="hidden" name="date" value="@menu.Date.ToString("yyyy-MM-dd")" />
+                                            <input type="hidden" name="mealType" value="Lunch" />
+                                            <button class="btn btn-success btn-sm w-100">✅ Accept</button>
+                                        </form>
+                                        <form method="post" asp-action="DeclineMeal">
+                                            <input type="hidden" name="date" value="@menu.Date.ToString("yyyy-MM-dd")" />
+                                            <input type="hidden" name="mealType" value="Lunch" />
+                                            <button class="btn btn-danger btn-sm w-100">❌ Decline</button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary w-100 p-2">⏰ Not Accepted</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- DINNER -->
+                        <div class="col-md-4">
+                            <div class="meal-card p-3 rounded border">
+                                <h5>🌙 Dinner</h5>
+                                <p class="text-muted">@menu.Dinner</p>
+                                <small class="text-info">Window: 7:00 PM – 9:00 PM</small>
+                                <div id="timer-dinner" class="timer-display mt-1"></div>
+                                <div class="mt-2">
+                                    @if (dinnerStatus == "Accepted")
+                                    {
+                                        <span class="badge bg-success w-100 p-2">✅ Accepted</span>
+                                    }
+                                    else if (dinnerStatus == "Declined")
+                                    {
+                                        <span class="badge bg-danger w-100 p-2">❌ Declined</span>
+                                    }
+                                    else if (dinnerOpen)
+                                    {
+                                        <form method="post" asp-action="AcceptMeal" class="mb-1">
+                                            <input type="hidden" name="date" value="@menu.Date.ToString("yyyy-MM-dd")" />
+                                            <input type="hidden" name="mealType" value="Dinner" />
+                                            <button class="btn btn-success btn-sm w-100">✅ Accept</button>
+                                        </form>
+                                        <form method="post" asp-action="DeclineMeal">
+                                            <input type="hidden" name="date" value="@menu.Date.ToString("yyyy-MM-dd")" />
+                                            <input type="hidden" name="mealType" value="Dinner" />
+                                            <button class="btn btn-danger btn-sm w-100">❌ Decline</button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary w-100 p-2">⏰ Not Accepted</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- ACCEPT ALL / DECLINE ALL -->
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <form method="post" asp-action="AcceptAllMeals">
+                                <input type="hidden" name="date" value="@menu.Date.ToString("yyyy-MM-dd")" />
+                                <button class="btn btn-success w-100">✅ Accept All Available</button>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <form method="post" asp-action="DeclineAllMeals">
+                                <input type="hidden" name="date" value="@menu.Date.ToString("yyyy-MM-dd")" />
+                                <button class="btn btn-danger w-100">❌ Decline All</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<style>
+    .meal-card {
+        background: #f9f9f9;
+        transition: all 0.3s;
+    }
+    .meal-card:hover {
+        box-shadow: 0 4px 15px rgba(102,126,234,0.15);
+        transform: translateY(-2px);
+    }
+    .timer-display {
+        font-size: 13px;
+        font-weight: 600;
+        color: #e53e3e;
+    }
+</style>
+
+<script>
+    function startTimer(elementId, endTimeStr) {
+        const timerEl = document.getElementById(elementId);
+        if (!timerEl) return;
+
+        function update() {
+            const now = new Date();
+            const end = new Date();
+            const [h, m, s] = endTimeStr.split(':').map(Number);
+            end.setHours(h, m, s, 0);
+
+            const diff = end - now;
+            if (diff <= 0) {
+                timerEl.textContent = "⏰ Window closed";
+                return;
+            }
+
+            const hrs  = Math.floor(diff / 3600000);
+            const mins = Math.floor((diff % 3600000) / 60000);
+            const secs = Math.floor((diff % 60000) / 1000);
+
+            timerEl.textContent =
+                `⏳ Time left: ${hrs}h ${mins}m ${secs}s`;
+
+            setTimeout(update, 1000);
+        }
+        update();
+    }
+
+    // Only start timer if window is currently open
+    @if (breakfastOpen)
+    {
+        <text>startTimer('timer-breakfast', '@ViewBag.BreakfastEnd');</text>
+    }
+    @if (lunchOpen)
+    {
+        <text>startTimer('timer-lunch',     '@ViewBag.LunchEnd');</text>
+    }
+    @if (dinnerOpen)
+    {
+        <text>startTimer('timer-dinner',    '@ViewBag.DinnerEnd');</text>
+    }
+</script>

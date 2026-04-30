@@ -10,17 +10,24 @@ namespace HostelManagementSystem.Services
         {
             _repo = repo;
         }
+        //public User? ValidateUser(string email, string password)
+        //{
+        //    var user = _repo.GetUser(email, password);
+        //    if (user != null && user.Password == password)
+        //    {
+        //        return user;
+        //    }
+        //    return null;
+
+
+        //}
+
         public User? ValidateUser(string email, string password)
         {
-            var user = _repo.GetUser(email, password);
-            if (user != null && user.Password == password)
-            {
-                return user;
-            }
-            return null;
-
-
+            return _repo.GetUser(email, password);
         }
+
+
         public void RegisterUser(User user)
         {
             var newuser = new User
