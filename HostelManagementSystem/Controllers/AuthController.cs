@@ -32,30 +32,6 @@ namespace HostelManagementSystem.Controllers
                 HttpContext.Session.SetString("UserEmail", user.Email);
                 HttpContext.Session.SetString("Role", user.FkRoleName);
 
-                //if (user.FkRoleName == "Admin")
-                //{
-                //    HttpContext.Session.SetString("Username", "Admin");
-                //    return RedirectToAction("Dashboard", "Admin");
-                //}
-                //else
-                //{
-                //    // ✅ Find student by email and store StudentName in session
-                //    var student = _context.Students
-                //                     .FirstOrDefault(s => s.Email == user.Email);
-
-                //    if (student != null)
-                //    {
-                //        HttpContext.Session.SetString("Username", student.StudentName);
-                //        HttpContext.Session.SetInt32("StudentID", student.StudentID);
-                //    }
-                //    else
-                //    {
-                //        HttpContext.Session.SetString("Username", user.Email);
-                //    }
-
-                //    return RedirectToAction("Dashboard", "Student");
-                //}
-
                 if (user.FkRoleName == "Admin")
                 {
                     HttpContext.Session.SetString("Username", "Admin");

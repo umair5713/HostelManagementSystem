@@ -41,25 +41,10 @@
         cursor: pointer;
     }
 
-    .btn-allocate {
-        background: #2575fc;
-        color: white;
-    }
-
-        .btn-allocate:hover {
-            background: #6a11cb;
-            color: white;
-        }
-
-    .btn-deallocate {
-        background: #ef4444;
-        color: white;
-    }
-
-        .btn-deallocate:hover {
-            background: #dc2626;
-            color: white;
-        }
+    .btn-allocate { background: #2575fc; color: white; }
+    .btn-allocate:hover { background: #6a11cb; color: white; }
+    .btn-deallocate { background: #ef4444; color: white; }
+    .btn-deallocate:hover { background: #dc2626; color: white; }
 
     .page-title {
         text-align: center;
@@ -81,7 +66,6 @@
 
     <h2 class="page-title">🛏️ Room Allocation</h2>
 
-    <!-- SUCCESS / ERROR MESSAGES -->
     @if (TempData["Success"] != null)
     {
         <div class="alert alert-success">✔ @TempData["Success"]</div>
@@ -91,7 +75,7 @@
         <div class="alert alert-danger">⚠ @TempData["Error"]</div>
     }
 
-    <!-- ALLOCATED ROOMS TABLE -->
+    <!-- ALLOCATED ROOMS -->
     <div class="dashboard-card">
         <h4>🏠 Currently Allocated Rooms</h4>
         <div class="table-responsive">
@@ -101,8 +85,7 @@
                         <th>Student ID</th>
                         <th>Student Name</th>
                         <th>Room No</th>
-                        <th>Fee Status</th>
-                        <th>Action</th>
+                        <th>Action</th>  @* ✅ Removed FeeStatus column *@
                     </tr>
                 </thead>
                 <tbody>
@@ -115,17 +98,6 @@
                                 <td>@s.StudentName</td>
                                 <td>@s.RoomNo</td>
                                 <td>
-                                    @if (s.FeeStatus)
-                                    {
-                                        <span class="badge bg-success">Paid</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-danger">Unpaid</span>
-                                    }
-                                </td>
-                                <td>
-                                    <!-- DEALLOCATE -->
                                     <form method="post" asp-action="DeallocateRoom" style="display:inline;">
                                         @Html.AntiForgeryToken()
                                         <input type="hidden" name="studentId" value="@s.StudentID" />
@@ -141,7 +113,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="5" class="text-muted">No rooms currently allocated.</td>
+                            <td colspan="4" class="text-muted">No rooms currently allocated.</td>
                         </tr>
                     }
                 </tbody>
@@ -149,7 +121,7 @@
         </div>
     </div>
 
-    <!-- ALLOCATE ROOM TO STUDENT -->
+    <!-- ALLOCATE ROOM -->
     <div class="dashboard-card">
         <h4>➕ Allocate Room to Student</h4>
         <div class="table-responsive">
@@ -171,21 +143,20 @@
                                 <td>@s.StudentID</td>
                                 <td>@s.StudentName</td>
                                 <td>
-                                    @if (string.IsNullOrEmpty(s.RoomNo))
-                                    {
-                                        <span class="text-muted">Not Assigned</span>
-                                    }
-                                    else
-                                    {
-                                        @s.RoomNo
-                                    }
+                                    @(string.IsNullOrEmpty(s.RoomNo) ? "Not Assigned" : s.RoomNo)
                                 </td>
                                 <td>
                                     <form method="post" asp-action="AllocateRoom" style="display:inline;">
                                         @Html.AntiForgeryToken()
                                         <input type="hidden" name="studentId" value="@s.StudentID" />
-                                        <input type="text" name="roomNo" class="room-input" placeholder="Room No" required />
-                                        <button type="submit" class="btn-modern btn-allocate btn-sm">🏠 Allocate</button>
+                                        <input type="text" name="roomNo" class="room-input"
+                                               placeholder="e.g. A-101"
+                                               pattern="[A-Z]-[0-9]{3}"
+                                               title="Format: A-101"
+                                               maxlength="5" required />
+                                        <button type="submit" class="btn-modern btn-allocate btn-sm">
+                                            🏠 Allocate
+                                        </button>
                                     </form>
                                 </td>
                             </tr>

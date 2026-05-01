@@ -1,59 +1,181 @@
-﻿```html
-@model HostelManagementSystem.Models.Fee
+﻿@model HostelManagementSystem.Models.Fee
 
 @{
     ViewData["Title"] = "Add Fee";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="card shadow p-4">
-    <h4 class="mb-4">Add Fee</h4>
+<div class="content-card" style="max-width: 600px;">
 
-    <form asp-action="Create" method="post">
+    <!-- HEADER -->
+    <div class="card-header-custom">
+        <h4><i class="fas fa-plus-circle"></i> Add Fee</h4>
+        <a asp-controller="Fee" asp-action="Index" class="btn-view">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+    </div>
 
-        <!-- Student Dropdown -->
+    <form asp-controller="Fee" asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+
+        <!-- STUDENT DROPDOWN -->
         <div class="mb-3">
-            <label class="form-label">Select Student</label>
-            <select asp-for="StudentID" class="form-select">
+            <label class="form-label fw-semibold">
+                <i class="fas fa-user"></i> Select Student
+            </label>
+            <select name="StudentID" class="form-control" required>
                 <option value="">-- Select Student --</option>
-                @foreach (var s in ViewBag.Students)
+                @foreach (var s in ViewBag.Students as List<HostelManagementSystem.Models.Student>)
                 {
                     <option value="@s.StudentID">
-                        @s.StudentName - Room: @s.RoomNo
+                        @s.StudentID - @s.StudentName - Room: @s.RoomNo
                     </option>
                 }
             </select>
-            <span asp-validation-for="StudentID" class="text-danger"></span>
         </div>
 
-        <!-- Amount -->
+        <!-- MONTH -->
         <div class="mb-3">
-            <label class="form-label">Amount</label>
-            <input asp-for="Amount" class="form-control" placeholder="Enter fee amount" />
-            <span asp-validation-for="Amount" class="text-danger"></span>
+            <label class="form-label fw-semibold">
+                <i class="fas fa-calendar"></i> Month
+            </label>
+            <select name="Month" class="form-control" required>
+                <option value="">-- Select Month --</option>
+                <option value="January 2026">January 2026</option>
+                <option value="February 2026">February 2026</option>
+                <option value="March 2026">March 2026</option>
+                <option value="April 2026">April 2026</option>
+                <option value="May 2026">May 2026</option>
+                <option value="June 2026">June 2026</option>
+                <option value="July 2026">July 2026</option>
+                <option value="August 2026">August 2026</option>
+                <option value="September 2026">September 2026</option>
+                <option value="October 2026">October 2026</option>
+                <option value="November 2026">November 2026</option>
+                <option value="December 2026">December 2026</option>
+            </select>
         </div>
 
-        <!-- Due Date -->
+        <!-- AMOUNT -->
         <div class="mb-3">
-            <label class="form-label">Due Date</label>
-            <input asp-for="DueDate" type="date" class="form-control" />
-            <span asp-validation-for="DueDate" class="text-danger"></span>
+            <label class="form-label fw-semibold">
+                <i class="fas fa-money-bill"></i> Amount (Rs.)
+            </label>
+            <input type="number" name="Amount" class="form-control"
+                   placeholder="Enter fee amount" required min="1" />
         </div>
 
-        <!-- Buttons -->
-        <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-success">
+        <!-- DUE DATE -->
+        <div class="mb-3">
+            <label class="form-label fw-semibold">
+                <i class="fas fa-calendar-alt"></i> Due Date
+            </label>
+            <input type="date" name="DueDate" class="form-control" required />
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn-edit">
                 <i class="fas fa-save"></i> Save Fee
             </button>
-
-            <a href="/Fee/Index" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Back
+            <a asp-controller="Fee" asp-action="Index" class="btn-view">
+                <i class="fas fa-times"></i> Cancel
             </a>
         </div>
+
     </form>
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
-```
+<style>
+    .content-card {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        margin: 0 auto;
+    }
+
+    .card-header-custom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+    }
+
+        .card-header-custom h4 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .card-header-custom i {
+            margin-right: 10px;
+            color: #667eea;
+        }
+
+    .form-label {
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 8px;
+    }
+
+        .form-label i {
+            margin-right: 6px;
+            color: #667eea;
+        }
+
+    .form-control {
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 10px 15px;
+        transition: all 0.3s;
+        font-size: 14px;
+    }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            outline: none;
+        }
+
+    .btn-edit {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.2s;
+    }
+
+    .btn-view {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.2s;
+    }
+
+        .btn-edit:hover,
+        .btn-view:hover {
+            transform: translateY(-1px);
+            opacity: 0.9;
+            color: white;
+        }
+
+    .gap-2 { gap: 10px; }
+    .d-flex { display: flex; }
+</style>

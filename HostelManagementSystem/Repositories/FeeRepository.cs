@@ -17,10 +17,11 @@ namespace HostelManagementSystem.Repositories
         public void AddFee(Fee fee)
         {
             _context.Database.ExecuteSqlRaw(
-                "EXEC sp_AddFee @StudentID, @Amount, @DueDate",
+                "EXEC sp_AddFee @StudentID, @Amount, @DueDate,@Month",
                 new SqlParameter("@StudentID", fee.StudentID),
                 new SqlParameter("@Amount", fee.Amount),
-                new SqlParameter("@DueDate", fee.DueDate)
+                new SqlParameter("@DueDate", fee.DueDate),
+                new SqlParameter("@Month", fee.Month)
             );
         }
 
@@ -42,22 +43,26 @@ namespace HostelManagementSystem.Repositories
         public void MarkAsPaid(int feeId)
         {
             _context.Database.ExecuteSqlRaw(
-                "UPDATE tbl_fees SET IsPaid = 1 WHERE FeeID = {0}", feeId
+                "UPDATE tbl_fees SET IsPaid = 1, PaidDate = @paidDate WHERE FeeID = @id",
+                new SqlParameter("@paidDate", DateTime.Now),
+                new SqlParameter("@id", feeId)
             );
         }
         public void EditFee(Fee fee)
         {
             _context.Database.ExecuteSqlRaw(
                 @"UPDATE tbl_fees 
-          SET StudentID = @studentId,
-              Amount = @amount,
-              DueDate = @dueDate,
-              IsPaid = @isPaid
-          WHERE FeeID = @id",
-                new SqlParameter("@studentId", fee.StudentID),
+          SET Amount   = @amount,
+              Month    = @month,
+              DueDate  = @dueDate,
+              IsPaid   = @isPaid,
+              PaidDate = @paidDate
+          WHERE FeeID  = @id",
                 new SqlParameter("@amount", fee.Amount),
+                new SqlParameter("@month", fee.Month),
                 new SqlParameter("@dueDate", fee.DueDate),
                 new SqlParameter("@isPaid", fee.IsPaid),
+                new SqlParameter("@paidDate", fee.IsPaid ? (object)DateTime.Now : DBNull.Value),
                 new SqlParameter("@id", fee.FeeID)
             );
         }
