@@ -23,7 +23,7 @@ namespace HostelManagementSystem.Services
 
         public Menu? GetMenu(DateTime date)
         {
-            return _repo.GetMenuByDate(date);
+            return _repo.GetMenuByDate(date.Date);
         }
 
         public Menu? GetMenuById(int menuId)

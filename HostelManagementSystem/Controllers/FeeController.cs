@@ -24,6 +24,7 @@ namespace HostelManagementSystem.Controllers
         // CREATE (GET)
         public IActionResult Create()
         {
+
             ViewBag.Students = _studentService.GetAllStudents();
             return View();
         }
@@ -33,6 +34,8 @@ namespace HostelManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Fee fee)
         {
+            Console.WriteLine($"StudentID: {fee.StudentID}, Month: {fee.Month}, Amount: {fee.Amount}");
+
             _service.AddFee(fee);
             return RedirectToAction("Index");
         }

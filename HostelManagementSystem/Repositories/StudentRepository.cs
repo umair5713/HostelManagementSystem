@@ -16,39 +16,51 @@ namespace HostelManagementSystem.Repositories
         public void AddStudent(Student student)
         {
             _context.Database.ExecuteSqlRaw(
-                "EXEC sp_RegisterStudent @StudentName, @RoomNo",
-                new Microsoft.Data.SqlClient.SqlParameter("@StudentName", student.StudentName),
-                new Microsoft.Data.SqlClient.SqlParameter("@RoomNo",
-                    string.IsNullOrEmpty(student.RoomNo) ? DBNull.Value : student.RoomNo)
+                @"INSERT INTO tbl_students (StudentName, Email, PhoneNumber, CNIC, Semester, RoomNo)
+          VALUES ({0}, {1}, {2}, {3}, {4}, {5})",
+                student.StudentName,
+                student.Email,
+                student.PhoneNumber,
+                student.CNIC,
+                student.Semester,
+                student.RoomNo
             );
         }
 
-        // GET ALL
+       
         public List<Student> GetStudents()
         {
             return _context.Students
-                      .FromSqlRaw("SELECT StudentID, StudentName,Email, PhoneNumber, CNIC, Semester, RoomNo, FeeStatus FROM tbl_students")
+                      .FromSqlRaw("SELECT StudentID, StudentName,Email, PhoneNumber, CNIC, Semester, RoomNo  FROM tbl_students")
                       .ToList();
         }
 
-        // GET BY ID
+       
         public Student? GetById(int studentId)
         {
             return _context.Students
-                      .FromSqlRaw("SELECT StudentID, StudentName,Email, PhoneNumber, CNIC, Semester, RoomNo, FeeStatus FROM tbl_students WHERE StudentID = {0}", studentId)
+                      .FromSqlRaw("SELECT StudentID, StudentName,Email, PhoneNumber, CNIC, Semester, RoomNo FROM tbl_students WHERE StudentID = {0}", studentId)
                       .FirstOrDefault();
         }
 
-        // UPDATE
+        
         public void UpdateStudent(Student student)
         {
             _context.Database.ExecuteSqlRaw(
                 @"UPDATE tbl_students 
-              SET StudentName = {0}, RoomNo = {1}, FeeStatus = {2}
-              WHERE StudentID = {3}",
+          SET StudentName  = {0},
+              Email        = {1},
+              PhoneNumber  = {2},
+              CNIC         = {3},
+              Semester     = {4},
+              RoomNo       = {5}
+          WHERE StudentID  = {6}",
                 student.StudentName,
+                student.Email,
+                student.PhoneNumber,
+                student.CNIC,
+                student.Semester,
                 student.RoomNo,
-                student.FeeStatus,
                 student.StudentID
             );
         }
@@ -66,7 +78,7 @@ namespace HostelManagementSystem.Repositories
         public List<Student> GetSortedByID()
         {
             return _context.Students
-                      .FromSqlRaw("SELECT StudentID, StudentName,Email, PhoneNumber, CNIC, Semester, RoomNo, FeeStatus FROM tbl_students ORDER BY StudentID ASC")
+                      .FromSqlRaw("SELECT StudentID, StudentName,Email, PhoneNumber, CNIC, Semester, RoomNo FROM tbl_students ORDER BY StudentID ASC")
                       .ToList();
         }
 

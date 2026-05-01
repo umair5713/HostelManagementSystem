@@ -1,15 +1,13 @@
 ﻿@model List<Complaint>
 @{
     ViewData["Title"] = "My Complaints";
-    Layout = "~/Views/Shared/_StudentLayout.cshtml";  // ✅ Student layout
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
 }
 
+<!-- WHITE CARD -->
 <div class="content-card">
     <div class="card-header-custom">
         <h4><i class="fas fa-exclamation-circle"></i> My Complaints</h4>
-        <a asp-action="Submit" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Submit New Complaint
-        </a>
     </div>
 
     @if (TempData["Success"] != null)
@@ -70,22 +68,70 @@
     }
 </div>
 
+<!-- BUTTON MOVED BELOW CARD -->
+<div class="submit-btn-below">
+    <a asp-action="Submit" class="white-btn">
+        <i class="fas fa-plus"></i> Submit New Complaint
+    </a>
+</div>
+
 <style>
-    .badge { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    /* BUTTON BELOW */
+    .submit-btn-below {
+        margin-top: 20px;
+        text-align: center; /* change to right if needed */
+    }
+
+    .white-btn {
+        background: #ffffff;
+        color: #6c63ff; /* purple */
+        padding: 10px 20px;
+        font-size: 14px;
+        border-radius: 10px;
+        border: 2px solid #6c63ff;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-block;
+        transition: 0.3s;
+    }
+
+    .white-btn:hover {
+        background: #6c63ff;
+        color: #ffffff;
+    }
+
+    /* EXISTING STYLES */
+    .badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
     .bg-warning { background: #f59e0b; color: white; }
     .bg-info { background: #3b82f6; color: white; }
     .bg-primary { background: #8b5cf6; color: white; }
     .bg-success { background: #10b981; color: white; }
+
     .alert-info {
         background: rgba(59, 130, 246, 0.1);
         border: 1px solid rgba(59, 130, 246, 0.3);
-        color: #3b82f6; padding: 15px; border-radius: 10px;
-        display: flex; align-items: center; gap: 10px;
+        color: #3b82f6;
+        padding: 15px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
+
     .alert-success {
         background: rgba(16, 185, 129, 0.1);
         border: 1px solid rgba(16, 185, 129, 0.3);
-        color: #10b981; padding: 15px; border-radius: 10px;
-        display: flex; align-items: center; gap: 10px;
+        color: #10b981;
+        padding: 15px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
 </style>

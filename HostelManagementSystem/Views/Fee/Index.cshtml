@@ -75,25 +75,12 @@
                                 <i class="fas fa-edit"></i>
                             </a>
 
-                            @* MARK AS PAID *@
-                            @if (!fee.IsPaid)
-                            {
-                                <form asp-controller="Fee" asp-action="Pay" method="post" style="display:inline;">
-                                    @Html.AntiForgeryToken()
-                                    <input type="hidden" name="id" value="@fee.FeeID" />
-                                    <button type="submit" class="btn-edit"
-                                            style="background: linear-gradient(135deg, #10b981, #059669);">
-                                        <i class="fas fa-check"></i> Pay
-                                    </button>
-                                </form>
-                            }
-
                             @* DELETE *@
                             <form asp-controller="Fee" asp-action="Delete" method="post" style="display:inline;">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="id" value="@fee.FeeID" />
                                 <button type="submit" class="btn-delete"
-                                        onclick="return confirm('Delete this fee record?')">
+                                        onclick="return confirm('Delete this fee recor  d?')">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>

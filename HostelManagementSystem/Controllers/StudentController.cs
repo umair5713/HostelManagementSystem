@@ -88,7 +88,7 @@ namespace HostelManagementSystem.Controllers
             return View("~/Views/Student/Index.cshtml", sorted);
         }
 
-        
+
         public IActionResult Dashboard()
         {
             int studentId = GetStudentId();
@@ -111,6 +111,10 @@ namespace HostelManagementSystem.Controllers
             int pendingComplaints = _context.Complaints
                 .Count(c => c.StudentName == studentName && c.Status == "Pending");
 
+            var fees = _context.Fees.Where(f => f.StudentID == studentId).ToList();
+            int unpaidFees = fees.Count(f => !f.IsPaid);
+            decimal totalDue = fees.Where(f => !f.IsPaid).Sum(f => f.Amount);
+
             var viewModel = new StudentDashboardViewModel
             {
                 StudentID = student?.StudentID ?? 0,
@@ -127,9 +131,9 @@ namespace HostelManagementSystem.Controllers
                 TodaysMenu = todaysMenu != null
                     ? new List<MenuItem>
                     {
-                        new MenuItem { MealType = "Breakfast", Description = todaysMenu.Breakfast, Time = "Morning"   },
-                        new MenuItem { MealType = "Lunch",     Description = todaysMenu.Lunch,     Time = "Afternoon" },
-                        new MenuItem { MealType = "Dinner",    Description = todaysMenu.Dinner,    Time = "Evening"   }
+                new MenuItem { MealType = "Breakfast", Description = todaysMenu.Breakfast, Time = "Morning"   },
+                new MenuItem { MealType = "Lunch",     Description = todaysMenu.Lunch,     Time = "Afternoon" },
+                new MenuItem { MealType = "Dinner",    Description = todaysMenu.Dinner,    Time = "Evening"   }
                     }
                     : new List<MenuItem>(),
 
@@ -137,15 +141,20 @@ namespace HostelManagementSystem.Controllers
                 {
                     TotalAttendance = attendanceCount,
                     PendingComplaints = pendingComplaints,
-                    OutstandingBills = student?.FeeStatus == true ? 0 : 5000,
+                    OutstandingBills = totalDue,      
                     HostelBlock = "Block A"
                 }
             };
 
+            // ✅ Pass fee info to view via ViewBag
+            ViewBag.UnpaidFees = unpaidFees;
+            ViewBag.TotalDue = totalDue;
+            ViewBag.TotalFees = fees.Count;
+
             return View("~/Views/Student/Dashboard.cshtml", viewModel);
         }
 
-      
+
         public IActionResult MyComplaints()
         {
             string studentName = GetStudentName();
@@ -182,6 +191,13 @@ namespace HostelManagementSystem.Controllers
 
             if (student == null)
                 return NotFound();
+
+            var fees = _context.Fees.Where(f => f.StudentID == studentId).ToList();
+            var unpaidFees = fees.Where(f => !f.IsPaid).ToList();
+
+            ViewBag.TotalFees = fees.Count;
+            ViewBag.UnpaidFees = unpaidFees.Count;
+            ViewBag.HasUnpaid = unpaidFees.Any();
 
             return View("~/Views/Student/Profile.cshtml", student);
         }
