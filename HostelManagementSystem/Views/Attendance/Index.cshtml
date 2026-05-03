@@ -1,48 +1,165 @@
 ﻿@model List<HostelManagementSystem.Models.AttendanceRecord>
 
 @{
-    ViewBag.Title = "Attendance Records";
+    ViewData["Title"] = "Attendance Records";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var students = ViewBag.Students as List<HostelManagementSystem.Models.Student>;
 }
 
-<h2 class="mt-3">Attendance Records</h2>
+<div class="content-card">
 
-<form method="post" asp-action="Mark" class="row g-3 mb-4">
-    <div class="col-md-3">
-        <input type="text" name="studentId" class="form-control" placeholder="Enter student ID" required />
+    <div class="card-header-custom">
+        <h4><i class="fas fa-clipboard-check"></i> Attendance Records</h4>
     </div>
-    <div class="col-md-3">
-        <input type="text" name="studentName" class="form-control" placeholder="Enter student name" required />
-    </div>
-    <div class="col-md-2">
-        <button type="submit" class="btn btn-primary">Mark Attendance</button>
-    </div>
-</form>
 
+    <!-- MARK ATTENDANCE FORM -->
+    <form method="post" asp-action="Mark" class="row g-3 mb-4">
+        <div class="col-md-5">
+            <select name="studentId" class="form-control" id="studentDropdown"
+                    onchange="fillStudentName(this)" required>
+                <option value="">-- Select Student --</option>
+                @if (students != null)
+                {
+                    @foreach (var s in students)
+                    {
+                        <option value="@s.StudentID" data-name="@s.StudentName">
+                            @s.StudentID - @s.StudentName
+                        </option>
+                    }
+                }
+            </select>
+        </div>
 
+        @* ✅ StudentName auto filled from dropdown *@
+        <input type="hidden" name="studentName" id="studentNameInput" />
 
-@if (Model == null || Model.Count == 0)
-{
-    <p>No attendance marked yet.</p>
-}
-else
-{
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Student ID</th>
-                <th>Student Name</th>
-                <th>Time</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var record in Model)
-            {
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="fas fa-check"></i> Mark Attendance
+            </button>
+        </div>
+    </form>
+
+    <!-- ATTENDANCE TABLE -->
+    @if (Model == null || Model.Count == 0)
+    {
+        <div class="alert-info">
+            <i class="fas fa-info-circle"></i> No attendance marked yet.
+        </div>
+    }
+    else
+    {
+        <table class="data-table">
+            <thead>
                 <tr>
-                    <td>@record.StudentID</td>
-                    <td>@record.StudentName</td>
-                    <td>@record.Time.ToString("dd/MM/yyyy HH:mm")</td>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Time</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody>
+                @foreach (var record in Model)
+                {
+                    <tr>
+                        <td>@record.StudentID</td>
+                        <td>@record.StudentName</td>
+                        <td>@record.Time.ToString("dd/MM/yyyy HH:mm")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+</div>
+
+<style>
+    .content-card {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    .card-header-custom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid rgba(102,126,234,0.1);
+    }
+
+        .card-header-custom h4 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .card-header-custom i {
+            margin-right: 10px;
+            color: #667eea;
+        }
+
+    .form-control {
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 10px 15px;
+        transition: all 0.3s;
+    }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+            outline: none;
+        }
+
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+        .data-table thead tr {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .data-table th {
+            padding: 14px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .data-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+            color: #4a5568;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(102,126,234,0.04);
+        }
+
+    .alert-info {
+        background: rgba(59,130,246,0.1);
+        border: 1px solid rgba(59,130,246,0.3);
+        color: #3b82f6;
+        padding: 15px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+</style>
+
+@* ✅ Auto fill studentName from dropdown selection *@
+<script>
+    function fillStudentName(select) {
+        var selectedOption = select.options[select.selectedIndex];
+        var name = selectedOption.getAttribute('data-name');
+        document.getElementById('studentNameInput').value = name || '';
+    }
+</script>
