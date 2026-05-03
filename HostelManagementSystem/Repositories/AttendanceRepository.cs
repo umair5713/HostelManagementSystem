@@ -34,7 +34,7 @@ namespace HostelManagementSystem.Repositories
         {
             var student = _context.Students
                 .FromSqlRaw(
-                    "SELECT StudentID, StudentName, RoomNo, FeeStatus, Email, PhoneNumber, CNIC, Semester FROM tbl_students WHERE StudentID = {0}",
+                    "SELECT StudentID, StudentName, RoomNo, Email, PhoneNumber, CNIC, Semester FROM tbl_students WHERE StudentID = {0}",
                     record.StudentID)
                 .FirstOrDefault();
 

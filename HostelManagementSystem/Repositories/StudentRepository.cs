@@ -1,5 +1,6 @@
 ﻿using HostelManagementSystem.Data;
 using HostelManagementSystem.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace HostelManagementSystem.Repositories
@@ -16,18 +17,17 @@ namespace HostelManagementSystem.Repositories
         public void AddStudent(Student student)
         {
             _context.Database.ExecuteSqlRaw(
-                @"INSERT INTO tbl_students (StudentName, Email, PhoneNumber, CNIC, Semester, RoomNo)
-          VALUES ({0}, {1}, {2}, {3}, {4}, {5})",
-                student.StudentName,
-                student.Email,
-                student.PhoneNumber,
-                student.CNIC,
-                student.Semester,
-                student.RoomNo
+                "EXEC sp_RegisterStudent @StudentName, @Email, @PhoneNumber, @CNIC, @Semester, @RoomNo",
+                new SqlParameter("@StudentName", student.StudentName),
+                new SqlParameter("@Email", student.Email),
+                new SqlParameter("@PhoneNumber", student.PhoneNumber),
+                new SqlParameter("@CNIC", student.CNIC),
+                new SqlParameter("@Semester", student.Semester),
+                new SqlParameter("@RoomNo", student.RoomNo ?? string.Empty)
             );
         }
 
-       
+
         public List<Student> GetStudents()
         {
             return _context.Students

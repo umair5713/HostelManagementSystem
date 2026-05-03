@@ -44,7 +44,7 @@ namespace HostelManagementSystem.Data
                 entity.Property(e => e.Email).HasColumnName("email");
                 entity.Property(e => e.Password).HasColumnName("user_password");
                 entity.Property(e => e.FkRoleName).HasColumnName("fk_role_name");
-                entity.Property(e => e.FkStudentId).HasColumnName("fk_student_id");
+                
             });
         }
 

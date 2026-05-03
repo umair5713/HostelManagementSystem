@@ -23,6 +23,7 @@ namespace HostelManagementSystem.Controllers
         }
 
         [HttpPost]
+        [HttpPost]
         public IActionResult Login(string email, string password)
         {
             var user = _service.ValidateUser(email, password);
@@ -39,21 +40,16 @@ namespace HostelManagementSystem.Controllers
                 }
                 else
                 {
-                    // USE fk_student_id directly — much more reliable
-                    if (user.FkStudentId.HasValue)
-                    {
-                        var student = _context.Students
-                            .FirstOrDefault(s => s.StudentID == user.FkStudentId.Value);
+                    var student = _context.Students
+                                          .FirstOrDefault(s => s.Email == user.Email);
 
-                        if (student != null)
-                        {
-                            HttpContext.Session.SetString("Username", student.StudentName);
-                            HttpContext.Session.SetInt32("StudentID", student.StudentID);
-                        }
+                    if (student != null)
+                    {
+                        HttpContext.Session.SetString("Username", student.StudentName);
+                        HttpContext.Session.SetInt32("StudentID", student.StudentID);
                     }
                     else
                     {
-                        // Fallback if fk_student_id not set
                         HttpContext.Session.SetString("Username", user.Email);
                     }
 
