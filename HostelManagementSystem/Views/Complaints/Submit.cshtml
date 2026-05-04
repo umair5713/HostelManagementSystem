@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Submit Complaint";
     Layout = "~/Views/Shared/_StudentLayout.cshtml";
+    var studentName = Context.Session.GetString("Username") ?? string.Empty;
 }
 
 <div class="content-card">
@@ -10,10 +11,14 @@
     </div>
 
     <form asp-action="Submit" method="post">
+        @Html.AntiForgeryToken()
+
+        <!-- ✅ Student Name auto-filled from session — readonly -->
         <div class="mb-3">
-            <label asp-for="StudentName" class="form-label">Student Name</label>
-            <input asp-for="StudentName" class="form-control" required />
-            <span asp-validation-for="StudentName" class="text-danger"></span>
+            <label class="form-label">Student Name</label>
+            <input type="text" name="StudentName" class="form-control"
+                   value="@studentName" readonly
+                   style="background: #f8fafc; cursor: not-allowed;" />
         </div>
 
         <div class="mb-3">
@@ -113,17 +118,10 @@
             color: #2d3748;
         }
 
-    .d-flex {
-        display: flex;
-    }
-
-    .gap-2 {
-        gap: 10px;
-    }
+    .d-flex { display: flex; }
+    .gap-2  { gap: 10px;    }
 </style>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
